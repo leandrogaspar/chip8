@@ -1,0 +1,23 @@
+{
+  "name": "chip8",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leandrogaspar/chip8.git"
+  },
+  "author": "Leandro G. Scanavini",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leandrogaspar/chip8/issues"
+  },
+  "homepage": "https://github.com/leandrogaspar/chip8#readme",
+  "devDependencies": {
+    "koa": "^2.7.0",
+    "koa-static": "^5.0.0"
+  }
+}
