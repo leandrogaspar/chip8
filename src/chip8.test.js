@@ -1,7 +1,11 @@
 import { Chip8 } from './chip8';
 
-test('adds 1 + 2 to equal 3', () => {
-    const chip8 = new Chip8();
-    chip8.hello();
-    expect(3).toBe(3);
-});
+describe('Chip8', () => {
+    test('to be created with default memory state', () => {
+        const chip8 = new Chip8();
+        const mockChip8 = createMockChip8();
+
+        const equals = isChip8Equal(chip8, mockChip8);
+        expect(equals).toBe(true);
+    });
+})
