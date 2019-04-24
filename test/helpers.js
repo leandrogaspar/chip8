@@ -54,7 +54,7 @@ global.isChip8Equal = (value, other) => {
     }
 
     if (value.PC !== other.PC) {
-        console.error('Program counter does not match!');
+        console.error(`Program counter does not match! a=[${value.PC}] b=[${other.PC}]`);
         return false;
     }
 
@@ -75,6 +75,11 @@ global.isChip8Equal = (value, other) => {
 
     return true;
 };
+
+global.loadOpCode = (chip8, addr, opCode) => {
+    chip8.memory[addr] = (opCode >> 8) & 0xFF;
+    chip8.memory[addr + 1] = opCode & 0xFF;
+}
 
 function compareArray(a, b) {
     for (let i = a.length; -1 < i; i -= 1) {
