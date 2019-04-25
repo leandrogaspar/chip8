@@ -247,12 +247,28 @@ describe('Chip8', () => {
         });
 
         describe('0x6XNN', () => {
-            test('should V[x] should be set to nn', () => {
+            test('V[x] should be set to nn', () => {
                 loadOpCode(chip8, 0x200, 0x6112);
                 const snapshot = chip8Snapshot(chip8);
 
                 snapshot.PC += 2;
                 snapshot.V[1] = 0x12;
+
+                chip8.cycle();
+
+                const equals = isChip8Equal(chip8, snapshot);
+                expect(equals).toBe(true);
+            });
+        });
+
+        describe('0x7XNN', () => {
+            test('nn should be added to V[x]', () => {
+                loadOpCode(chip8, 0x200, 0x7512);
+                chip8.V[5] = 0x1;
+                const snapshot = chip8Snapshot(chip8);
+
+                snapshot.PC += 2;
+                snapshot.V[5] = 0x12 + 0x1;
 
                 chip8.cycle();
 

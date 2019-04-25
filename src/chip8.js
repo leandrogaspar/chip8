@@ -63,7 +63,7 @@ export class Chip8 {
 
         // We are using the nibble of the opcode as the
         // Operation Code "Family".
-        switch(o) {
+        switch (o) {
             case 0x0: this.opCodeFamily_0x0(opCode); return;
             case 0x1: this.opCodeFamily_0x1(opCode); return;
             case 0x2: this.opCodeFamily_0x2(opCode); return;
@@ -116,48 +116,48 @@ export class Chip8 {
     }
 
     opCodeFamily_0x3(opCode) {
-        // 3XNN - Skip the following instruction if the value of register VX equals NN
         const x = opCode_x(opCode);
         const nn = opCode_nn(opCode);
-
+        // 3XNN - Skip the following instruction if the value of register VX equals NN
         if (this.V[x] === nn) {
             this.PC += 2;
         }
     }
 
     opCodeFamily_0x4(opCode) {
-        // 4XNN - Skip the following instruction if the value of register VX is not equal to NN
         const x = opCode_x(opCode);
         const nn = opCode_nn(opCode);
-
+        // 4XNN - Skip the following instruction if the value of register VX is not equal to NN
         if (this.V[x] !== nn) {
             this.PC += 2;
         }
     }
 
     opCodeFamily_0x5(opCode) {
-        // 5XY0 - Skip the following instruction if the value of register VX is equal to the value of register VY
         const x = opCode_x(opCode);
         const y = opCode_y(opCode);
         const n = opCode_n(opCode);
         if (n !== 0x0) throw new Error(`OpCode ${opcode.toString(16)} does not exist!`);
 
+        // 5XY0 - Skip the following instruction if the value of register VX is equal to the value of register VY
         if (this.V[x] === this.V[y]) {
             this.PC += 2;
         }
     }
 
     opCodeFamily_0x6(opCode) {
-        // 5XNN - Store number NN in register VX
         const x = opCode_x(opCode);
         const nn = opCode_nn(opCode);
 
+        // 5XNN - Store number NN in register VX
         this.V[x] = nn;
     }
 
     opCodeFamily_0x7(opCode) {
+        const x = opCode_x(opCode);
+        const nn = opCode_nn(opCode);
         // 7XNN - Add the value NN to register VX
-        throw new Error('Not supported!');
+        this.V[x] += nn;
     }
 
     opCodeFamily_0x8(opCode) {
