@@ -149,7 +149,10 @@ export class Chip8 {
 
     opCodeFamily_0x6(opCode) {
         // 5XNN - Store number NN in register VX
-        throw new Error('Not supported!');
+        const x = opCode_x(opCode);
+        const nn = opCode_nn(opCode);
+
+        this.V[x] = nn;
     }
 
     opCodeFamily_0x7(opCode) {
