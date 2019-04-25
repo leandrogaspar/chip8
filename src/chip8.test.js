@@ -1,8 +1,13 @@
 import { Chip8 } from './chip8';
 
 describe('Chip8', () => {
+    let chip8;
+
+    beforeEach(() => {
+        chip8 = new Chip8();
+    });
+
     test('it is created with default memory state', () => {
-        const chip8 = new Chip8();
         const mockChip8 = createMockChip8();
 
         const equals = isChip8Equal(chip8, mockChip8);
@@ -10,7 +15,6 @@ describe('Chip8', () => {
     });
 
     test('it can be reseted back to the default state', () => {
-        const chip8 = new Chip8();
         const before = chip8Snapshot(chip8);
 
         chip8.memory[4000] = 2;
@@ -31,104 +35,215 @@ describe('Chip8', () => {
 
     describe('Custom constructor options', () => {
         test('it can have a custom memory size', () => {
-            const chip8 = new Chip8({memSize: 2});
-            const mockChip8 = createMockChip8({memory: new Uint8Array(2)});
-    
-            const equals = isChip8Equal(chip8, mockChip8);
+            const customChip8 = new Chip8({ memSize: 2 });
+            const mockChip8 = createMockChip8({ memory: new Uint8Array(2) });
+
+            const equals = isChip8Equal(customChip8, mockChip8);
             expect(equals).toBe(true);
         });
 
         test('it can start on a custom PC value', () => {
-            const chip8 = new Chip8({pcStart: 0x300});
-            const mockChip8 = createMockChip8({PC: 0x300});
-    
-            const equals = isChip8Equal(chip8, mockChip8);
+            const customChip8 = new Chip8({ pcStart: 0x300 });
+            const mockChip8 = createMockChip8({ PC: 0x300 });
+
+            const equals = isChip8Equal(customChip8, mockChip8);
             expect(equals).toBe(true);
         });
 
         test('it can have a custom stack size', () => {
-            const chip8 = new Chip8({stackSize: 50});
-            const mockChip8 = createMockChip8({stack: new Uint16Array(50)});
-    
-            const equals = isChip8Equal(chip8, mockChip8);
+            const customChip8 = new Chip8({ stackSize: 50 });
+            const mockChip8 = createMockChip8({ stack: new Uint16Array(50) });
+
+            const equals = isChip8Equal(customChip8, mockChip8);
             expect(equals).toBe(true);
         });
 
         test('it can have a custom display size', () => {
-            const chip8 = new Chip8({displaySize: 99});
-            const mockChip8 = createMockChip8({display: new Uint8Array(99)});
-    
-            const equals = isChip8Equal(chip8, mockChip8);
+            const customChip8 = new Chip8({ displaySize: 99 });
+            const mockChip8 = createMockChip8({ display: new Uint8Array(99) });
+
+            const equals = isChip8Equal(customChip8, mockChip8);
             expect(equals).toBe(true);
         });
     });
 
     describe('Instructions', () => {
         test('it should throw error on invalid opCode', () => {
-            const chip8 = new Chip8();
-
             expect(chip8.cycle).toThrow();
         });
 
-        test('opcode 0x00E0 should clear the screen', () => {
-            const chip8 = new Chip8();
-            loadOpCode(chip8, 0x200, 0x00E0);
-            const snapshot = chip8Snapshot(chip8);
+        describe('0x0NNN', () => {
+            test('should be a no-op', () => {
+                loadOpCode(chip8, 0x200, 0x0111);
+                const snapshot = chip8Snapshot(chip8);
 
-            snapshot.PC +=2;
+                snapshot.PC += 2;
 
-            chip8.display[1] = 2;
-            chip8.display[5] = 3;
-            chip8.display[50] = 4;
+                chip8.cycle();
 
-            chip8.cycle();
-
-            const equals = isChip8Equal(chip8, snapshot);
-            expect(equals).toBe(true);
+                const equals = isChip8Equal(chip8, snapshot);
+                expect(equals).toBe(true);
+            });
         });
 
-        test('opcode 0x00EE should return from subroutine', () => {
-            const chip8 = new Chip8();
-            loadOpCode(chip8, 0x200, 0x2EEE);
-            loadOpCode(chip8, 0xEEE, 0x00EE);
-            chip8.cycle();
-            const snapshot = chip8Snapshot(chip8);
+        describe('0x00E0', () => {
+            test('should clear the screen', () => {
+                loadOpCode(chip8, 0x200, 0x00E0);
+                const snapshot = chip8Snapshot(chip8);
 
-            snapshot.SP -= 1;
-            snapshot.PC = snapshot.stack[snapshot.SP];
+                snapshot.PC += 2;
 
-            chip8.cycle();
+                chip8.display[1] = 2;
+                chip8.display[5] = 3;
+                chip8.display[50] = 4;
 
-            const equals = isChip8Equal(chip8, snapshot);
-            expect(equals).toBe(true);
+                chip8.cycle();
+
+                const equals = isChip8Equal(chip8, snapshot);
+                expect(equals).toBe(true);
+            });
         });
 
-        test('opcode 0x1nnn should set PC to nnn', () => {
-            const chip8 = new Chip8();
-            loadOpCode(chip8, 0x200, 0x1EEE);
-            const snapshot = chip8Snapshot(chip8);
+        describe('0x00EE', () => {
+            test('should return from subroutine', () => {
+                loadOpCode(chip8, 0x200, 0x2EEE);
+                loadOpCode(chip8, 0xEEE, 0x00EE);
+                chip8.cycle();
+                const snapshot = chip8Snapshot(chip8);
 
-            snapshot.PC = 0xEEE;
+                snapshot.SP -= 1;
+                snapshot.PC = snapshot.stack[snapshot.SP];
 
-            chip8.cycle();
+                chip8.cycle();
 
-            const equals = isChip8Equal(chip8, snapshot);
-            expect(equals).toBe(true);
+                const equals = isChip8Equal(chip8, snapshot);
+                expect(equals).toBe(true);
+            });
         });
 
-        test('opcode 0x2nnn should call subroutine at nnn', () => {
-            const chip8 = new Chip8();
-            loadOpCode(chip8, 0x200, 0x2EEE);
-            const snapshot = chip8Snapshot(chip8);
+        describe('0x1NNN', () => {
+            test('should jump to nnn', () => {
+                loadOpCode(chip8, 0x200, 0x1EEE);
+                const snapshot = chip8Snapshot(chip8);
 
-            snapshot.stack[snapshot.SP] = snapshot.PC + 2;
-            snapshot.SP += 1;
-            snapshot.PC = 0xEEE;
+                snapshot.PC = 0xEEE;
 
-            chip8.cycle();
+                chip8.cycle();
 
-            const equals = isChip8Equal(chip8, snapshot);
-            expect(equals).toBe(true);
+                const equals = isChip8Equal(chip8, snapshot);
+                expect(equals).toBe(true);
+            });
+        });
+
+        describe('0x2NNN', () => {
+            test('should call subroutine at nnn', () => {
+                loadOpCode(chip8, 0x200, 0x2EEE);
+                const snapshot = chip8Snapshot(chip8);
+
+                snapshot.stack[snapshot.SP] = snapshot.PC + 2;
+                snapshot.SP += 1;
+                snapshot.PC = 0xEEE;
+
+                chip8.cycle();
+
+                const equals = isChip8Equal(chip8, snapshot);
+                expect(equals).toBe(true);
+            });
+        });
+
+        describe('0x3XNN', () => {
+            test('should skip next routine when V[x] === nn', () => {
+                loadOpCode(chip8, 0x200, 0x3012);
+                chip8.V[0] = 0x12;
+                const snapshot = chip8Snapshot(chip8);
+
+                snapshot.PC += 4;
+
+                chip8.cycle();
+
+                const equals = isChip8Equal(chip8, snapshot);
+                expect(equals).toBe(true);
+            });
+
+
+            test('shouldn\'t skip next routine when V[x] !== nn', () => {
+                loadOpCode(chip8, 0x200, 0x3012);
+                chip8.V[0] = 0x13;
+                const snapshot = chip8Snapshot(chip8);
+
+                snapshot.PC += 2;
+
+                chip8.cycle();
+
+                const equals = isChip8Equal(chip8, snapshot);
+                expect(equals).toBe(true);
+            });
+        });
+
+        describe('0x4XNN', () => {
+            test('should skip next routine when V[x] !== nn', () => {
+                loadOpCode(chip8, 0x200, 0x4012);
+                chip8.V[0] = 0x13;
+                const snapshot = chip8Snapshot(chip8);
+
+                snapshot.PC += 4;
+
+                chip8.cycle();
+
+                const equals = isChip8Equal(chip8, snapshot);
+                expect(equals).toBe(true);
+            });
+
+
+            test('shouldn\'t skip next routine when V[x] === nn', () => {
+                loadOpCode(chip8, 0x200, 0x4012);
+                chip8.V[0] = 0x12;
+                const snapshot = chip8Snapshot(chip8);
+
+                snapshot.PC += 2;
+
+                chip8.cycle();
+
+                const equals = isChip8Equal(chip8, snapshot);
+                expect(equals).toBe(true);
+            });
+        });
+
+        describe('0x5XY0', () => {
+            test('should skip next routine when V[x] === V[y]', () => {
+                loadOpCode(chip8, 0x200, 0x5010);
+                chip8.V[0] = 0x13;
+                chip8.V[1] = 0x13;
+                const snapshot = chip8Snapshot(chip8);
+
+                snapshot.PC += 4;
+
+                chip8.cycle();
+
+                const equals = isChip8Equal(chip8, snapshot);
+                expect(equals).toBe(true);
+            });
+
+
+            test('shouldn\'t skip next routine when V[x] !== V[y]', () => {
+                loadOpCode(chip8, 0x200, 0x5010);
+                chip8.V[0] = 0x13;
+                chip8.V[1] = 0x14;
+                const snapshot = chip8Snapshot(chip8);
+
+                snapshot.PC += 2;
+
+                chip8.cycle();
+
+                const equals = isChip8Equal(chip8, snapshot);
+                expect(equals).toBe(true);
+            });
+
+            test('should throw error for n !== 0', () => {
+                loadOpCode(chip8, 0x200, 0x5011);
+
+                expect(chip8.cycle).toThrow();
+            });
         });
     });
 });
