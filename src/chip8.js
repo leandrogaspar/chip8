@@ -157,7 +157,7 @@ export class Chip8 {
         const x = opCode_x(opCode);
         const nn = opCode_nn(opCode);
         // 7XNN - Add the value NN to register VX
-        this.V[x] += nn;
+        this.V[x] = (this.V[x] + nn) & 0xFF;
     }
 
     opCodeFamily_0x8(opCode) {

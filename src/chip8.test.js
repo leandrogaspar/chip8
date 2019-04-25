@@ -280,6 +280,21 @@ describe('Chip8', () => {
                 const equals = isChip8Equal(chip8, snapshot);
                 expect(equals).toBe(true);
             });
+
+            test('should handle overflow witouth setting VF', () => {
+                loadOpCode(chip8, 0x200, 0x71FF);
+                chip8.V[1] = 0x2F;
+                const snapshot = chip8Snapshot(chip8);
+
+                snapshot.PC += 2;
+                snapshot.V[1] = (0x2F + 0xFF) & 0xFF;
+
+                chip8.cycle();
+
+                const equals = isChip8Equal(chip8, snapshot);
+                expect(equals).toBe(true);
+                expect(chip8.V[0xF]).toBe(0);
+            });
         });
 
         describe('0x8 family', () => {
