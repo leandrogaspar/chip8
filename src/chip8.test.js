@@ -36,33 +36,33 @@ describe('Chip8', () => {
     describe('Custom constructor options', () => {
         test('it can have a custom memory size', () => {
             const customChip8 = new Chip8({ memSize: 2 });
-            const mockChip8 = createMockChip8({ memory: new Uint8Array(2) });
+            const expected = createMockChip8({ memory: new Uint8Array(2) });
 
-            const equals = isChip8Equal(customChip8, mockChip8);
+            const equals = isChip8Equal(customChip8, expected);
             expect(equals).toBe(true);
         });
 
         test('it can start on a custom PC value', () => {
             const customChip8 = new Chip8({ pcStart: 0x300 });
-            const mockChip8 = createMockChip8({ PC: 0x300 });
+            const expected = createMockChip8({ PC: 0x300 });
 
-            const equals = isChip8Equal(customChip8, mockChip8);
+            const equals = isChip8Equal(customChip8, expected);
             expect(equals).toBe(true);
         });
 
         test('it can have a custom stack size', () => {
             const customChip8 = new Chip8({ stackSize: 50 });
-            const mockChip8 = createMockChip8({ stack: new Uint16Array(50) });
+            const expected = createMockChip8({ stack: new Uint16Array(50) });
 
-            const equals = isChip8Equal(customChip8, mockChip8);
+            const equals = isChip8Equal(customChip8, expected);
             expect(equals).toBe(true);
         });
 
         test('it can have a custom display size', () => {
             const customChip8 = new Chip8({ displaySize: 99 });
-            const mockChip8 = createMockChip8({ display: new Uint8Array(99) });
+            const expected = createMockChip8({ display: new Uint8Array(99) });
 
-            const equals = isChip8Equal(customChip8, mockChip8);
+            const equals = isChip8Equal(customChip8, expected);
             expect(equals).toBe(true);
         });
     });
