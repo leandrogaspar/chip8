@@ -161,10 +161,29 @@ export class Chip8 {
     }
 
     opCodeFamily_0x8(opCode) {
-        // 8XY0 - Store the value of register VY in register VX
-        // 8XY1 - Set VX to VX OR VY
-        // 8XY2 - Set VX to VX AND VY
-        // 8XY3 - Set VX to VX XOR VY
+        const n = opCode_n(opCode);
+        const x = opCode_x(opCode);
+        const y = opCode_y(opCode);
+        switch (n) {
+            // 8XY0 - Store the value of register VY in register VX
+            case 0x0:
+                this.V[x] = this.V[y];
+                break;
+            // 8XY1 - Set VX to VX OR VY
+            case 0x1:
+                this.V[x] = this.V[x] | this.V[y];
+                break;
+            // 8XY2 - Set VX to VX AND VY
+            case 0x2:
+                this.V[x] = this.V[x] & this.V[y];
+                break;
+            // 8XY3 - Set VX to VX XOR VY
+            case 0x3:
+                this.V[x] = this.V[x] ^ this.V[y];
+                break;
+            default: throw new Error(`OpCode ${opCode.toString(16)} does not exist!`);
+        }
+
         /* 8XY4 - Add the value of register VY to register VX
                 - Set VF to 01 if a carry occurs
                 - Set VF to 00 if a carry does not occur */
@@ -178,7 +197,6 @@ export class Chip8 {
                 - Set VF to 01 if a borrow does not occur */
         /* 8XYE - Store the value of register VY shifted left one bit in register VX
                 - Set register VF to the most significant bit prior to the shift */
-        throw new Error('Not supported!');
     }
 
     opCodeFamily_0x9(opCode) {

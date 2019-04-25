@@ -72,52 +72,54 @@ describe('Chip8', () => {
             expect(chip8.cycle).toThrow();
         });
 
-        describe('0x0NNN', () => {
-            test('should be a no-op', () => {
-                loadOpCode(chip8, 0x200, 0x0111);
-                const snapshot = chip8Snapshot(chip8);
+        describe('0x0 family', () => {
+            describe('0x0NNN', () => {
+                test('should be a no-op', () => {
+                    loadOpCode(chip8, 0x200, 0x0111);
+                    const snapshot = chip8Snapshot(chip8);
 
-                snapshot.PC += 2;
+                    snapshot.PC += 2;
 
-                chip8.cycle();
+                    chip8.cycle();
 
-                const equals = isChip8Equal(chip8, snapshot);
-                expect(equals).toBe(true);
+                    const equals = isChip8Equal(chip8, snapshot);
+                    expect(equals).toBe(true);
+                });
             });
-        });
 
-        describe('0x00E0', () => {
-            test('should clear the screen', () => {
-                loadOpCode(chip8, 0x200, 0x00E0);
-                const snapshot = chip8Snapshot(chip8);
+            describe('0x00E0', () => {
+                test('should clear the screen', () => {
+                    loadOpCode(chip8, 0x200, 0x00E0);
+                    const snapshot = chip8Snapshot(chip8);
 
-                snapshot.PC += 2;
+                    snapshot.PC += 2;
 
-                chip8.display[1] = 2;
-                chip8.display[5] = 3;
-                chip8.display[50] = 4;
+                    chip8.display[1] = 2;
+                    chip8.display[5] = 3;
+                    chip8.display[50] = 4;
 
-                chip8.cycle();
+                    chip8.cycle();
 
-                const equals = isChip8Equal(chip8, snapshot);
-                expect(equals).toBe(true);
+                    const equals = isChip8Equal(chip8, snapshot);
+                    expect(equals).toBe(true);
+                });
             });
-        });
 
-        describe('0x00EE', () => {
-            test('should return from subroutine', () => {
-                loadOpCode(chip8, 0x200, 0x2EEE);
-                loadOpCode(chip8, 0xEEE, 0x00EE);
-                chip8.cycle();
-                const snapshot = chip8Snapshot(chip8);
+            describe('0x00EE', () => {
+                test('should return from subroutine', () => {
+                    loadOpCode(chip8, 0x200, 0x2EEE);
+                    loadOpCode(chip8, 0xEEE, 0x00EE);
+                    chip8.cycle();
+                    const snapshot = chip8Snapshot(chip8);
 
-                snapshot.SP -= 1;
-                snapshot.PC = snapshot.stack[snapshot.SP];
+                    snapshot.SP -= 1;
+                    snapshot.PC = snapshot.stack[snapshot.SP];
 
-                chip8.cycle();
+                    chip8.cycle();
 
-                const equals = isChip8Equal(chip8, snapshot);
-                expect(equals).toBe(true);
+                    const equals = isChip8Equal(chip8, snapshot);
+                    expect(equals).toBe(true);
+                });
             });
         });
 
@@ -239,11 +241,14 @@ describe('Chip8', () => {
                 expect(equals).toBe(true);
             });
 
-            test('should throw error for n !== 0', () => {
-                loadOpCode(chip8, 0x200, 0x5011);
+            for (let i = 1; i < 10; i++) {
+                test(`should throw error for n === ${i.toString(16)}`, () => {
+                    const opCode = 0x5000 + i;
+                    loadOpCode(chip8, 0x200, opCode);
 
-                expect(chip8.cycle).toThrow();
-            });
+                    expect(chip8.cycle).toThrow();
+                });
+            }
         });
 
         describe('0x6XNN', () => {
@@ -274,6 +279,90 @@ describe('Chip8', () => {
 
                 const equals = isChip8Equal(chip8, snapshot);
                 expect(equals).toBe(true);
+            });
+        });
+
+        describe('0x8 family', () => {
+            const invalidOpsN = [0x8, 0x9, 0xA, 0xB, 0xC, 0xD, 0xF];
+            invalidOpsN.forEach(n => {
+                test(`should throw error for n === ${n.toString(16)}`, () => {
+                    const opCode = 0x8000 + n;
+                    loadOpCode(chip8, 0x200, opCode);
+
+                    expect(chip8.cycle).toThrow();
+                });
+            });
+
+            describe('8XY0', () => {
+                test('should store the value of V[y] in V[x]', () => {
+                    loadOpCode(chip8, 0x200, 0x8120);
+                    chip8.V[1] = 0x3
+                    chip8.V[2] = 0x1;
+                    const snapshot = chip8Snapshot(chip8);
+
+                    snapshot.PC += 2;
+                    snapshot.V[1] = 0x1;
+                    snapshot.V[2] = 0x1;
+
+                    chip8.cycle();
+
+                    const equals = isChip8Equal(chip8, snapshot);
+                    expect(equals).toBe(true);
+                });
+            });
+
+            describe('8XY1', () => {
+                test('should set V[x] to V[x] or V[y]', () => {
+                    loadOpCode(chip8, 0x200, 0x8121);
+                    chip8.V[1] = 0x3
+                    chip8.V[2] = 0x1;
+                    const snapshot = chip8Snapshot(chip8);
+
+                    snapshot.PC += 2;
+                    snapshot.V[1] = 0x3 | 0x1;
+                    snapshot.V[2] = 0x1;
+
+                    chip8.cycle();
+
+                    const equals = isChip8Equal(chip8, snapshot);
+                    expect(equals).toBe(true);
+                });
+            });
+
+            describe('8XY2', () => {
+                test('should set V[x] to V[x] or V[y]', () => {
+                    loadOpCode(chip8, 0x200, 0x8122);
+                    chip8.V[1] = 0x3
+                    chip8.V[2] = 0x1;
+                    const snapshot = chip8Snapshot(chip8);
+
+                    snapshot.PC += 2;
+                    snapshot.V[1] = 0x3 & 0x1;
+                    snapshot.V[2] = 0x1;
+
+                    chip8.cycle();
+
+                    const equals = isChip8Equal(chip8, snapshot);
+                    expect(equals).toBe(true);
+                });
+            });
+
+            describe('8XY3', () => {
+                test('should set V[x] to V[x] or V[y]', () => {
+                    loadOpCode(chip8, 0x200, 0x8123);
+                    chip8.V[1] = 0x3
+                    chip8.V[2] = 0x1;
+                    const snapshot = chip8Snapshot(chip8);
+
+                    snapshot.PC += 2;
+                    snapshot.V[1] = 0x3 ^ 0x1;
+                    snapshot.V[2] = 0x1;
+
+                    chip8.cycle();
+
+                    const equals = isChip8Equal(chip8, snapshot);
+                    expect(equals).toBe(true);
+                });
             });
         });
     });
