@@ -10,7 +10,10 @@
             "name": "Debug Jest",
             "program": "${workspaceFolder}\\node_modules\\jest\\bin\\jest",
             "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen"
-      },
+            "internalConsoleOptions": "neverOpen",
+            "args": [
+                "${fileBasenameNoExtension}"
+            ],
+        },
     ]
 }

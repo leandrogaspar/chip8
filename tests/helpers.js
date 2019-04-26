@@ -1,3 +1,9 @@
+import { Chip8 } from '../src/chip8';
+
+global.createChip8 = (options) => {
+    return new Chip8(options);
+}
+
 global.createMockChip8 = (options) => {
     options = options || {};
     return {
