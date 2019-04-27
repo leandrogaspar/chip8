@@ -155,8 +155,6 @@ describe('0x8 Family', () => {
         });
     });
 
-                    /* 8XY6 - Store the value of register VY shifted right one bit in register VX
-                    - Set register VF to the least significant bit prior to the shift */
     describe('8XY6', () => {
         test('should store the value of register VY shifted right one bit in register VX and set VF to the least significant bit pror the shift', () => {
             loadOpCode(chip8, 0x200, 0x8126);
@@ -168,6 +166,40 @@ describe('0x8 Family', () => {
             const shift = 0x3 >> 1;
             snapshot.V[1] = shift;
             snapshot.V[0xF] = 0x3 & 0x1;
+
+            chip8.cycle();
+            const equals = isChip8Equal(chip8, snapshot);
+            expect(equals).toBe(true);
+        });
+    });
+
+    describe('8XY7', () => {
+        test('should set register VX to the value of VY minus VX set VF to 00 if a borrow occurs', () => {
+            loadOpCode(chip8, 0x200, 0x8127);
+            chip8.V[1] = 0x3;
+            chip8.V[2] = 0x1;
+            const snapshot = chip8Snapshot(chip8);
+
+            snapshot.PC += 2;
+            snapshot.V[1] = (0x1 - 0x3) & 0xFF;
+            snapshot.V[2] = 0x1;
+            snapshot.V[0xF] = 0x00;
+
+            chip8.cycle();
+            const equals = isChip8Equal(chip8, snapshot);
+            expect(equals).toBe(true);
+        });
+
+        test('should set register VX to the value of VY minus VX set VF to 01 if a does not borrow occurs', () => {
+            loadOpCode(chip8, 0x200, 0x8127);
+            chip8.V[1] = 0x1;
+            chip8.V[2] = 0x3;
+            const snapshot = chip8Snapshot(chip8);
+
+            snapshot.PC += 2;
+            snapshot.V[1] = (0x3 - 0x1) & 0xFF;
+            snapshot.V[2] = 0x3;
+            snapshot.V[0xF] = 0x01;
 
             chip8.cycle();
             const equals = isChip8Equal(chip8, snapshot);
