@@ -181,12 +181,21 @@ export class Chip8 {
             case 0x3:
                 this.V[x] = this.V[x] ^ this.V[y];
                 break;
+            /* 8XY4 - Add the value of register VY to register VX
+                - Set VF to 01 if a carry occurs
+                - Set VF to 00 if a carry does not occur */
+            case 0x4:
+                const sum = this.V[x] + this.V[y];
+                if ((sum >> 8) !== 0x0) {
+                    this.V[0xF] = 0x1;
+                } else {
+                    this.V[0xF] = 0x0;
+                }
+                this.V[x] = sum & 0xFF;
+                break;
             default: throw new Error(`OpCode ${opCode.toString(16)} does not exist!`);
         }
 
-        /* 8XY4 - Add the value of register VY to register VX
-                - Set VF to 01 if a carry occurs
-                - Set VF to 00 if a carry does not occur */
         /* 8XY5 - Subtract the value of register VY from register VX
                 - Set VF to 00 if a borrow occurs
                 - Set VF to 01 if a borrow does not occur */
