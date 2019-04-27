@@ -224,8 +224,15 @@ export class Chip8 {
     }
 
     opCodeFamily_0x9(opCode) {
+        const x = opCode_x(opCode);
+        const y = opCode_y(opCode);
+        const n = opCode_n(opCode);
+
+        if (n !== 0) throw new Error(`OpCode ${opCode.toString(16)} does not exist!`);
         // 9XY0 - Skip the following instruction if the value of register VX is not equal to the value of register VY
-        throw new Error('Not supported!');
+        if (this.V[x] !== this.V[y]) {
+            this.PC +=2;
+        }
     }
 
     opCodeFamily_0xA(opCode) {
