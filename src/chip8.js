@@ -242,8 +242,9 @@ export class Chip8 {
     }
 
     opCodeFamily_0xB(opCode) {
+        const nnn = opCode_nnn(opCode);
         // BNNN - Jump to address NNN + V0
-        throw new Error('Not supported!');
+        this.PC = nnn + this.V[0];
     }
 
     opCodeFamily_0xC(opCode) {
