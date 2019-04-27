@@ -231,7 +231,7 @@ export class Chip8 {
         if (n !== 0) throw new Error(`OpCode ${opCode.toString(16)} does not exist!`);
         // 9XY0 - Skip the following instruction if the value of register VX is not equal to the value of register VY
         if (this.V[x] !== this.V[y]) {
-            this.PC +=2;
+            this.PC += 2;
         }
     }
 
@@ -248,8 +248,10 @@ export class Chip8 {
     }
 
     opCodeFamily_0xC(opCode) {
+        const x = opCode_x(opCode);
+        const nn = opCode_nn(opCode);
         // CXNN - Set VX to a random number with a mask of NN
-        throw new Error('Not supported!');
+        this.V[x] = (Math.random() * 256) & nn;
     }
 
     opCodeFamily_0xD(opCode) {
