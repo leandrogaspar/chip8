@@ -200,8 +200,8 @@ export class Chip8 {
             /* 8XY6 - Store the value of register VY shifted right one bit in register VX
                     - Set register VF to the least significant bit prior to the shift */
             case 0x6:
-                const shift = this.V[y] >> 1;
-                this.V[x] = shift;
+                const rightShift = this.V[y] >> 1;
+                this.V[x] = rightShift;
                 this.V[0xF] = this.V[y] & 0x1;
                 break;
             /* 8XY7 - Set register VX to the value of VY minus VX
@@ -212,12 +212,15 @@ export class Chip8 {
                 this.V[0xF] = this.V[y] >= this.V[x];
                 this.V[x] = yMinusX & 0xFF;
                 break;
+            /* 8XYE - Store the value of register VY shifted left one bit in register VX
+                    - Set register VF to the most significant bit prior to the shift */
+            case 0xE:
+                const leftShift = this.V[y] << 1;
+                this.V[x] = leftShift;
+                this.V[0xF] = this.V[y] & 0x1;
+                break;
             default: throw new Error(`OpCode ${opCode.toString(16)} does not exist!`);
         }
-
-
-        /* 8XYE - Store the value of register VY shifted left one bit in register VX
-                - Set register VF to the most significant bit prior to the shift */
     }
 
     opCodeFamily_0x9(opCode) {
