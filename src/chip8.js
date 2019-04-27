@@ -182,25 +182,31 @@ export class Chip8 {
                 this.V[x] = this.V[x] ^ this.V[y];
                 break;
             /* 8XY4 - Add the value of register VY to register VX
-                - Set VF to 01 if a carry occurs
-                - Set VF to 00 if a carry does not occur */
+                    - Set VF to 01 if a carry occurs
+                    - Set VF to 00 if a carry does not occur */
             case 0x4:
                 const sum = this.V[x] + this.V[y];
                 this.V[0xF] = sum > 0xFF;
                 this.V[x] = sum & 0xFF;
                 break;
             /* 8XY5 - Subtract the value of register VY from register VX
-                - Set VF to 00 if a borrow occurs
-                - Set VF to 01 if a borrow does not occur */
+                    - Set VF to 00 if a borrow occurs
+                    - Set VF to 01 if a borrow does not occur */
             case 0x5:
                 const sub = this.V[x] - this.V[y];
                 this.V[0xF] = this.V[x] >= this.V[y];
                 this.V[x] = sub & 0xFF;
                 break;
+            /* 8XY6 - Store the value of register VY shifted right one bit in register VX
+                    - Set register VF to the least significant bit prior to the shift */
+            case 0x6:
+                const shift = this.V[y] >> 1;
+                this.V[x] = shift;
+                this.V[0xF] = this.V[y] & 0x1;
+                break;
             default: throw new Error(`OpCode ${opCode.toString(16)} does not exist!`);
         }
-        /* 8XY6 - Store the value of register VY shifted right one bit in register VX
-                - Set register VF to the least significant bit prior to the shift */
+
         /* 8XY7 - Set register VX to the value of VY minus VX
                 - Set VF to 00 if a borrow occurs
                 - Set VF to 01 if a borrow does not occur */
