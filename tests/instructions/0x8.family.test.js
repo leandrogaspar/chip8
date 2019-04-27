@@ -207,8 +207,6 @@ describe('0x8 Family', () => {
         });
     });
 
-    /* 8XYE - Store the value of register VY shifted left one bit in register VX
-        - Set register VF to the most significant bit prior to the shift */
     describe('8XYE', () => {
         test('should store the value of register VY shifted left one bit in register VX and set VF to the least significant bit prior the shift', () => {
             loadOpCode(chip8, 0x200, 0x812E);
