@@ -236,8 +236,9 @@ export class Chip8 {
     }
 
     opCodeFamily_0xA(opCode) {
+        const nnn = opCode_nnn(opCode);
         // ANNN - Store memory address NNN in register I
-        throw new Error('Not supported!');
+        this.I = nnn;
     }
 
     opCodeFamily_0xB(opCode) {
