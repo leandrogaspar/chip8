@@ -120,4 +120,38 @@ describe('0x8 Family', () => {
             expect(equals).toBe(true);
         });
     });
+
+    describe('8XY5', () => {
+        test('should subtract the value of register VY from register VX and set VF to 00 if a borrow occurs', () => {
+            loadOpCode(chip8, 0x200, 0x8125);
+            chip8.V[1] = 0x1;
+            chip8.V[2] = 0x3;
+            const snapshot = chip8Snapshot(chip8);
+
+            snapshot.PC += 2;
+            snapshot.V[1] = (0x1 - 0x3) & 0xFF;
+            snapshot.V[2] = 0x3;
+            snapshot.V[0xF] = 0x00;
+
+            chip8.cycle();
+            const equals = isChip8Equal(chip8, snapshot);
+            expect(equals).toBe(true);
+        });
+
+        test('should subtract the value of register VY from register VX and set VF to 01 if a borrow does not occurs', () => {
+            loadOpCode(chip8, 0x200, 0x8125);
+            chip8.V[1] = 0xFF;
+            chip8.V[2] = 0x1;
+            const snapshot = chip8Snapshot(chip8);
+
+            snapshot.PC += 2;
+            snapshot.V[1] = 0xFF - 0x1;
+            snapshot.V[2] = 0x1;
+            snapshot.V[0xF] = 0x01;
+
+            chip8.cycle();
+            const equals = isChip8Equal(chip8, snapshot);
+            expect(equals).toBe(true);
+        });
+    });
 });
