@@ -20,10 +20,10 @@ function start() {
     chip8.load(0x20E, 0x4000); // 0b1000000
     chip8.load(0x20f, 0x4000); // 0b1000000
     chip8.load(0x210, 0x7C00); // 0b1111100
+    chip8.screen = screen;
 
     setInterval(() => {
         chip8.cycle();
-        screen.draw(chip8.display);
     }, 200);
 }
 

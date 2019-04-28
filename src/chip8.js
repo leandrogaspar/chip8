@@ -25,6 +25,7 @@ export class Chip8 {
         this.PC_START = options.pcStart || 0x200;
         this.STACK_SIZE = options.stackSize || 16;
         this.DISPLAY_SIZE = options.displaySize || 64 * 32;
+        this.screen = { draw: (displayData) => { } };
         this.reset();
     }
 
@@ -62,6 +63,11 @@ export class Chip8 {
         const opcode = this.memory[this.PC] << 8 | this.memory[this.PC + 1];
 
         this.executeOpCode(opcode);
+
+        if (this.shouldDraw) {
+            this.shouldDraw = false;
+            this.screen.draw(this.display);
+        }
     }
 
     /**
@@ -71,11 +77,11 @@ export class Chip8 {
      */
     executeOpCode(opCode) {
         this.PC += 2;
-        const o = (opCode & 0xF000) >> 12;
+        const opFamily = (opCode & 0xF000) >> 12;
 
         // We are using the nibble of the opcode as the
         // Operation Code "Family".
-        switch (o) {
+        switch (opFamily) {
             case 0x0: this.opCodeFamily_0x0(opCode); return;
             case 0x1: this.opCodeFamily_0x1(opCode); return;
             case 0x2: this.opCodeFamily_0x2(opCode); return;
@@ -272,6 +278,7 @@ export class Chip8 {
         const n = opCode_n(opCode);
         /* DXYN - Draw a sprite at position VX, VY with N bytes of sprite data starting at the address stored in I
                 - Set VF to 01 if any set pixels are changed to unset, and 00 otherwise */
+        this.shouldDraw = true;
         this.V[0xF] = 0;
         for (let row = 0; row < n; row++) {
             const spriteRow = this.memory[this.I + row];
