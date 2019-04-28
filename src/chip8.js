@@ -267,9 +267,32 @@ export class Chip8 {
     }
 
     opCodeFamily_0xD(opCode) {
+        const x = opCode_x(opCode);
+        const y = opCode_y(opCode);
+        const n = opCode_n(opCode);
         /* DXYN - Draw a sprite at position VX, VY with N bytes of sprite data starting at the address stored in I
                 - Set VF to 01 if any set pixels are changed to unset, and 00 otherwise */
-        throw new Error('Not supported!');
+        this.V[0xF] = 0;
+        for (let row = 0; row < n; row++) {
+            const spriteRow = this.memory[this.I + row];
+
+            for (let bitIndex = 0; bitIndex < 8; bitIndex++) {
+                const bit = spriteRow & (0b10000000 >> bitIndex);
+
+                if (!bit) continue;
+
+                const targetX = (this.V[x] + bitIndex) % 64; // modulus to make it wrap to screen
+                const targetY = (this.V[y] + row) % 32;
+                const displayPosition = targetX + (targetY * 64); // Transform 2D to 1D -> i = x + width*y;
+
+                // If the display will be unset, set VF
+                if (this.display[displayPosition] !== 0) {
+                    this.V[0xF] = 0x1;
+                }
+
+                this.display[displayPosition] ^= 1;
+            }
+        }
     }
 
     opCodeFamily_0xE(opCode) {

@@ -45,12 +45,11 @@ export class Screen {
         this.ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
         const drawColor = `rgb(${this.drawColor.r},${this.drawColor.g},${this.drawColor.b})`;
-        let currentLine = 0;
         for (let i = 0; i < displayData.length; i++) {
-            currentLine = Math.floor(i / this.width);
-            const x = i - currentLine * this.width;
+            const y = Math.floor(i / this.width);
+            const x = i % this.width;
             if (displayData[i] !== 0) {
-                this._drawPixel(x, currentLine, pixelSize, drawColor);
+                this._drawPixel(x, y, pixelSize, drawColor);
             }
         }
     }
