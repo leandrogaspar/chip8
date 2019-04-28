@@ -15,7 +15,7 @@ global.createMockChip8 = (options) => {
         PC: options.PC || 0x200,
         SP: options.SP || 0,
         stack: options.stack || new Uint16Array(16),
-        display: options.display || new Uint8Array(64*32),
+        display: options.display || new Array(64*32).fill(0),
     };
 };
 
@@ -83,8 +83,7 @@ global.isChip8Equal = (value, other) => {
 };
 
 global.loadOpCode = (chip8, addr, opCode) => {
-    chip8.memory[addr] = (opCode >> 8) & 0xFF;
-    chip8.memory[addr + 1] = opCode & 0xFF;
+    chip8.load(addr, opCode);
 }
 
 function compareArray(a, b) {

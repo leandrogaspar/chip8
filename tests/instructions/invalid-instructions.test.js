@@ -1,4 +1,4 @@
-describe('0x7 Family', () => {
+describe('Invalid instructions', () => {
     let chip8;
 
     beforeEach(() => {

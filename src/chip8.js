@@ -40,7 +40,19 @@ export class Chip8 {
         this.PC = this.PC_START;
         this.SP = 0;
         this.stack = new Uint16Array(this.STACK_SIZE);
-        this.display = new Uint8Array(this.DISPLAY_SIZE);
+        this.display = new Array(this.DISPLAY_SIZE).fill(0);
+    }
+
+    /**
+     * Load 2 bytes of data at the specified address
+     * @param {number} addr - Data target
+     * @param {number} data - 2 bytes of data
+     * @returns {Chip8} - The chip8 itself
+     */
+    load(addr, data) {
+        this.memory[addr] = (data >> 8) & 0xFF;
+        this.memory[addr + 1] = data & 0xFF;
+        return this;
     }
 
     /**

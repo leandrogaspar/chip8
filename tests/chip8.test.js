@@ -31,6 +31,13 @@ describe('Chip8', () => {
         expect(equals).toBe(true);
     });
 
+    test('it is possible to load data using the load function', () => {
+        chip8.load(0x200, 0xABCD);
+
+        expect(chip8.memory[0x200]).toBe(0xAB);
+        expect(chip8.memory[0x201]).toBe(0xCD);
+    });
+
     describe('Custom constructor options', () => {
         test('it can have a custom memory size', () => {
             const customChip8 = createChip8({ memSize: 2 });
