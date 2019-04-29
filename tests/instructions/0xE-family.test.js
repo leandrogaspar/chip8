@@ -12,7 +12,7 @@ describe('0xE Family', () => {
             const opCode = 0xE000 + nn;
             loadOpCode(chip8, 0x200, opCode);
 
-            expect(chip8.cycle).toThrow();
+            expect(() => { chip8.cycle(); }).toThrow();
         });
     });
 
@@ -20,7 +20,7 @@ describe('0xE Family', () => {
         test('should skip the following instruction if the key stored in V[x] is pressed', () => {
             loadOpCode(chip8, 0x200, 0xE09E);
             chip8.V[0] = 0x0;
-            chip8.keys[0x0] = true;
+            chip8.pressKey(0x0);
             const snapshot = chip8Snapshot(chip8);
             chip8.cycle();
 
@@ -35,7 +35,7 @@ describe('0xE Family', () => {
         test('should skip the following instruction if the key stored in V[x] is not pressed', () => {
             loadOpCode(chip8, 0x200, 0xE0A1);
             chip8.V[0] = 0x0;
-            chip8.keys[0x0] = false;
+            chip8.releaseKey(0x0);
             const snapshot = chip8Snapshot(chip8);
             chip8.cycle();
 

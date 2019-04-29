@@ -11,7 +11,7 @@ describe('0x8 Family', () => {
             const opCode = 0x8000 + n;
             loadOpCode(chip8, 0x200, opCode);
 
-            expect(chip8.cycle).toThrow();
+            expect(() => { chip8.cycle(); }).toThrow();
         });
     });
 

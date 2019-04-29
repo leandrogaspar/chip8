@@ -21,10 +21,17 @@ describe('0xF Family', () => {
     });
 
     describe('FX0A', () => {
-        test('TODO PLACEHOLDER', () => {
+        test('should wait for a keypress and store the result in register VX', () => {
             loadOpCode(chip8, 0x200, 0xF00A);
+            chip8.cycle();
+            chip8.cycle();
+            chip8.cycle();
+            chip8.cycle();
+            chip8.pressKey(0xA);
 
-            expect(chip8.cycle).toThrow();
+            expect(chip8.keys[0xA]).toBe(true);
+            expect(chip8.V[0]).toBe(0xA);
+            expect(chip8.PC).toBe(0x202);
         });
     });
 

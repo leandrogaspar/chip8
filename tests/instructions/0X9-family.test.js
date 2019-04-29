@@ -10,7 +10,7 @@ describe('0x9 Family', () => {
             const opCode = 0x5000 + a;
             loadOpCode(chip8, 0x200, opCode);
 
-            expect(chip8.cycle).toThrow();
+            expect(() => { chip8.cycle(); }).toThrow();
         });
 
     describe('0x9XY0', () => {

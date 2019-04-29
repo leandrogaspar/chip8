@@ -47,6 +47,28 @@ export class Chip8 {
         this.stack = new Uint16Array(this.STACK_SIZE);
         this.display = new Array(this.DISPLAY_SIZE).fill(0);
         this.keys = {};
+        this.waitingKey = false;
+        this.waitingKeyTarget = -1;
+    }
+
+    /**
+     * Set the key as pressed
+     * @param {number} key 0x0 up to 0xF
+     */
+    pressKey(key) {
+        this.keys[key & 0xF] = true;
+        if (this.waitingKey) {
+            this.V[this.waitingKeyTarget] = key;
+            this.waitingKey = false;
+        }
+    }
+
+    /**
+     * Set the key as released
+     * @param {number} key 0x0 up to 0xF
+     */
+    releaseKey(key) {
+        this.keys[key & 0xF] = false;
     }
 
     /**
@@ -65,6 +87,10 @@ export class Chip8 {
      * Performs one emulation cycle
      */
     cycle() {
+        if (this.waitingKey) {
+            return;
+        }
+
         const opcode = this.memory[this.PC] << 8 | this.memory[this.PC + 1];
 
         this.executeOpCode(opcode);
@@ -340,7 +366,10 @@ export class Chip8 {
                 this.V[x] = this.DT;
                 break;
             // FX0A	- Wait for a keypress and store the result in register VX
-            case 0x0A: throw new Error('TODO PLACEHOLDER');
+            case 0x0A:
+                this.waitingKey = true;
+                this.waitingKeyTarget = x;
+                break;
             // FX15 - Set the delay timer to the value of register VX
             case 0x15:
                 this.DT = this.V[x];

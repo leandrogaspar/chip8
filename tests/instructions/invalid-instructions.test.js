@@ -6,6 +6,7 @@ describe('Invalid instructions', () => {
     });
 
     test('it should throw error on invalid opCode', () => {
-        expect(chip8.cycle).toThrow();
+        loadOpCode(chip8, 0x200, 0xFFFF);
+        expect(() => { chip8.cycle(); }).toThrow();
     });
 });
