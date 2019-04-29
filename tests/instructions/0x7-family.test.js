@@ -7,7 +7,7 @@ describe('0x7 Family', () => {
 
     describe('0x7XNN', () => {
         test('should add the value NN to register VX', () => {
-            loadOpCode(chip8, 0x200, 0x7512);
+            writeWord(chip8, 0x200, 0x7512);
             chip8.V[5] = 0x1;
             const snapshot = chip8Snapshot(chip8);
 
@@ -21,7 +21,7 @@ describe('0x7 Family', () => {
         });
 
         test('should handle overflow without setting VF', () => {
-            loadOpCode(chip8, 0x200, 0x71FF);
+            writeWord(chip8, 0x200, 0x71FF);
             chip8.V[1] = 0x2F;
             const snapshot = chip8Snapshot(chip8);
 

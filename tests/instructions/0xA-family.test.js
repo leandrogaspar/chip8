@@ -7,7 +7,7 @@ describe('0xA Family', () => {
 
     describe('0xANNN', () => {
         test('should store memory address NNN in register I', () => {
-            loadOpCode(chip8, 0x200, 0xAEEE);
+            writeWord(chip8, 0x200, 0xAEEE);
             const snapshot = chip8Snapshot(chip8);
 
             snapshot.PC += 2;

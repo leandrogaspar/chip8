@@ -7,7 +7,7 @@ describe('0x3 Family', () => {
 
     describe('0x3XNN', () => {
         test('should skip the following instruction if the value of register VX equals NN', () => {
-            loadOpCode(chip8, 0x200, 0x3012);
+            writeWord(chip8, 0x200, 0x3012);
             chip8.V[0] = 0x12;
             const snapshot = chip8Snapshot(chip8);
 
@@ -20,7 +20,7 @@ describe('0x3 Family', () => {
         });
 
         test('shouldn\'t skip the following instruction if the value of register VX not equals NN', () => {
-            loadOpCode(chip8, 0x200, 0x3012);
+            writeWord(chip8, 0x200, 0x3012);
             chip8.V[0] = 0x13;
             const snapshot = chip8Snapshot(chip8);
 

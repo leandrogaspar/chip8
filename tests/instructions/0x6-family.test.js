@@ -7,7 +7,7 @@ describe('0x6 Family', () => {
 
     describe('0x6XNN', () => {
         test('should store number NN in register VX', () => {
-            loadOpCode(chip8, 0x200, 0x6112);
+            writeWord(chip8, 0x200, 0x6112);
             const snapshot = chip8Snapshot(chip8);
 
             snapshot.PC += 2;

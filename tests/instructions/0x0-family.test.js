@@ -7,7 +7,7 @@ describe('0x0 Family', () => {
 
     describe('0x0NNN', () => {
         test('should be a no-op', () => {
-            loadOpCode(chip8, 0x200, 0x0111);
+            writeWord(chip8, 0x200, 0x0111);
             const snapshot = chip8Snapshot(chip8);
 
             snapshot.PC += 2;
@@ -21,7 +21,7 @@ describe('0x0 Family', () => {
 
     describe('0x00E0', () => {
         test('should clear the screen', () => {
-            loadOpCode(chip8, 0x200, 0x00E0);
+            writeWord(chip8, 0x200, 0x00E0);
             const snapshot = chip8Snapshot(chip8);
 
             snapshot.PC += 2;
@@ -39,8 +39,8 @@ describe('0x0 Family', () => {
 
     describe('0x00EE', () => {
         test('should return from a subroutine', () => {
-            loadOpCode(chip8, 0x200, 0x2EEE);
-            loadOpCode(chip8, 0xEEE, 0x00EE);
+            writeWord(chip8, 0x200, 0x2EEE);
+            writeWord(chip8, 0xEEE, 0x00EE);
             chip8.cycle();
             const snapshot = chip8Snapshot(chip8);
 

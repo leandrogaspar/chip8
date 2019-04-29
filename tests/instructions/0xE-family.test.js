@@ -10,7 +10,7 @@ describe('0xE Family', () => {
     invalidOpsNN.forEach(nn => {
         test(`should throw error for nn === ${nn.toString(16)}`, () => {
             const opCode = 0xE000 + nn;
-            loadOpCode(chip8, 0x200, opCode);
+            writeWord(chip8, 0x200, opCode);
 
             expect(() => { chip8.cycle(); }).toThrow();
         });
@@ -18,7 +18,7 @@ describe('0xE Family', () => {
 
     describe('EX9E', () => {
         test('should skip the following instruction if the key stored in V[x] is pressed', () => {
-            loadOpCode(chip8, 0x200, 0xE09E);
+            writeWord(chip8, 0x200, 0xE09E);
             chip8.V[0] = 0x0;
             chip8.pressKey(0x0);
             const snapshot = chip8Snapshot(chip8);
@@ -33,7 +33,7 @@ describe('0xE Family', () => {
 
     describe('EXA1', () => {
         test('should skip the following instruction if the key stored in V[x] is not pressed', () => {
-            loadOpCode(chip8, 0x200, 0xE0A1);
+            writeWord(chip8, 0x200, 0xE0A1);
             chip8.V[0] = 0x0;
             chip8.releaseKey(0x0);
             const snapshot = chip8Snapshot(chip8);

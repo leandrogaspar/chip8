@@ -11,7 +11,7 @@ describe('0xC Family', () => {
             mockMath.random = () => 0.5;
             global.Math = mockMath;
 
-            loadOpCode(chip8, 0x200, 0xC1EE);
+            writeWord(chip8, 0x200, 0xC1EE);
             chip8.V[1] = 0x1;
             const snapshot = chip8Snapshot(chip8);
 

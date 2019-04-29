@@ -8,14 +8,14 @@ describe('0x5 Family', () => {
     test.each([0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF])
         ('should throw error for n === %d', (a) => {
             const opCode = 0x5000 + a;
-            loadOpCode(chip8, 0x200, opCode);
+            writeWord(chip8, 0x200, opCode);
 
             expect(() => { chip8.cycle(); }).toThrow();
         });
 
     describe('0x5XY0', () => {
         test('should skip the following instruction if the value of register VX is equal to the value of register VY', () => {
-            loadOpCode(chip8, 0x200, 0x5010);
+            writeWord(chip8, 0x200, 0x5010);
             chip8.V[0] = 0x13;
             chip8.V[1] = 0x13;
             const snapshot = chip8Snapshot(chip8);
@@ -30,7 +30,7 @@ describe('0x5 Family', () => {
 
 
         test('shouldn\'t skip the following instruction if the value of register VX is not equal to the value of register VY', () => {
-            loadOpCode(chip8, 0x200, 0x5010);
+            writeWord(chip8, 0x200, 0x5010);
             chip8.V[0] = 0x13;
             chip8.V[1] = 0x14;
             const snapshot = chip8Snapshot(chip8);

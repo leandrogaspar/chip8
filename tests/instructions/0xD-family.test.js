@@ -10,7 +10,7 @@ describe('0xD Family', () => {
             chip8.I = 0x20A; // Sprite memory location
             chip8.V[0] = 0x00;
             chip8.V[1] = 0x00;
-            loadOpCode(chip8, 0x200, 0xD012);
+            writeWord(chip8, 0x200, 0xD012);
             chip8.memory[0x20A] = 0b11110000;
             chip8.memory[0x20B] = 0b00001111;
 
@@ -35,7 +35,7 @@ describe('0xD Family', () => {
             chip8.I = 0x20A; // Sprite memory location
             chip8.V[0] = 60;
             chip8.V[1] = 0x00;
-            loadOpCode(chip8, 0x200, 0xD011);
+            writeWord(chip8, 0x200, 0xD011);
             chip8.memory[0x20A] = 0b10000001;
 
             // 0 1 2 3 ... 60 61 62 63
@@ -54,7 +54,7 @@ describe('0xD Family', () => {
             chip8.I = 0x20A; // Sprite memory location
             chip8.V[0] = 0;
             chip8.V[1] = 32;
-            loadOpCode(chip8, 0x200, 0xD011);
+            writeWord(chip8, 0x200, 0xD011);
             chip8.memory[0x20A] = 0b10000001;
 
             const snapshot = chip8Snapshot(chip8);
@@ -72,7 +72,7 @@ describe('0xD Family', () => {
             chip8.I = 0x20A; // Sprite memory location
             chip8.V[0] = 0;
             chip8.V[1] = 0;
-            loadOpCode(chip8, 0x200, 0xD011);
+            writeWord(chip8, 0x200, 0xD011);
             chip8.memory[0x20A] = 0b10000001;
             const snapshot = chip8Snapshot(chip8);
             chip8.display[0] = 1;

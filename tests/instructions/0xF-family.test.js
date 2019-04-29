@@ -5,9 +5,17 @@ describe('0xF Family', () => {
         chip8 = createChip8();
     });
 
+    test.each([0x00, 0xAB, 0x66])
+        ('should throw error for nn === %d', (a) => {
+            const opCode = 0xF000 + a;
+            writeWord(chip8, 0x200, opCode);
+
+            expect(() => { chip8.cycle(); }).toThrow();
+        });
+
     describe('FX07', () => {
         test('should store the current value of the delay timer in register VX', () => {
-            loadOpCode(chip8, 0x200, 0xF007);
+            writeWord(chip8, 0x200, 0xF007);
             chip8.DT = 8;
             const snapshot = chip8Snapshot(chip8);
             chip8.cycle();
@@ -22,7 +30,7 @@ describe('0xF Family', () => {
 
     describe('FX0A', () => {
         test('should wait for a keypress and store the result in register VX', () => {
-            loadOpCode(chip8, 0x200, 0xF00A);
+            writeWord(chip8, 0x200, 0xF00A);
             chip8.cycle();
             chip8.cycle();
             chip8.cycle();
@@ -37,7 +45,7 @@ describe('0xF Family', () => {
 
     describe('FX15', () => {
         test('should set DT to the value of V[x]', () => {
-            loadOpCode(chip8, 0x200, 0xF015);
+            writeWord(chip8, 0x200, 0xF015);
             chip8.V[0] = 8;
             const snapshot = chip8Snapshot(chip8);
             chip8.cycle();
@@ -52,7 +60,7 @@ describe('0xF Family', () => {
 
     describe('FX18', () => {
         test('should set ST to the value of V[x]', () => {
-            loadOpCode(chip8, 0x200, 0xF018);
+            writeWord(chip8, 0x200, 0xF018);
             chip8.V[0] = 8;
             const snapshot = chip8Snapshot(chip8);
             chip8.cycle();
@@ -67,7 +75,7 @@ describe('0xF Family', () => {
 
     describe('FX1E', () => {
         test('should add the value stored in register VX to register I', () => {
-            loadOpCode(chip8, 0x200, 0xF01E);
+            writeWord(chip8, 0x200, 0xF01E);
             chip8.V[0] = 8;
             chip8.I = 2;
             const snapshot = chip8Snapshot(chip8);
@@ -83,7 +91,7 @@ describe('0xF Family', () => {
 
     describe('FX29', () => {
         test('should set I to the memory address of the sprite data corresponding to the hexadecimal digit stored in register VX', () => {
-            loadOpCode(chip8, 0x200, 0xF029);
+            writeWord(chip8, 0x200, 0xF029);
             chip8.V[0] = 5;
             const snapshot = chip8Snapshot(chip8);
             chip8.cycle();
@@ -98,7 +106,7 @@ describe('0xF Family', () => {
 
     describe('FX33', () => {
         test('should store the binary-coded decimal equivalent of the value stored in register VX at addresses I, I+1, and I+2', () => {
-            loadOpCode(chip8, 0x200, 0xF033);
+            writeWord(chip8, 0x200, 0xF033);
             chip8.V[0] = 102;
             chip8.I = 0x20A;
             const snapshot = chip8Snapshot(chip8);
@@ -116,7 +124,7 @@ describe('0xF Family', () => {
 
     describe('FX55', () => {
         test('should store the values of registers V0 to VX inclusive in memory starting at address I and set I to I + x + 1', () => {
-            loadOpCode(chip8, 0x200, 0xF355);
+            writeWord(chip8, 0x200, 0xF355);
             chip8.V[0] = 2;
             chip8.V[1] = 4;
             chip8.V[2] = 8;
@@ -139,7 +147,7 @@ describe('0xF Family', () => {
 
     describe('FX65', () => {
         test('should fill registers V0 to VX inclusive with the values stored in memory starting at address I and set I to I + x + 1', () => {
-            loadOpCode(chip8, 0x200, 0xF365);
+            writeWord(chip8, 0x200, 0xF365);
             chip8.memory[0x20A] = 2;
             chip8.memory[0x20A + 1] = 4;
             chip8.memory[0x20A + 2] = 8;

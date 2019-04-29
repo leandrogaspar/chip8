@@ -9,7 +9,7 @@ describe('0x8 Family', () => {
     invalidOpsN.forEach(n => {
         test(`should throw error for n === ${n.toString(16)}`, () => {
             const opCode = 0x8000 + n;
-            loadOpCode(chip8, 0x200, opCode);
+            writeWord(chip8, 0x200, opCode);
 
             expect(() => { chip8.cycle(); }).toThrow();
         });
@@ -17,7 +17,7 @@ describe('0x8 Family', () => {
 
     describe('8XY0', () => {
         test('should store the value of register VY in register VX', () => {
-            loadOpCode(chip8, 0x200, 0x8120);
+            writeWord(chip8, 0x200, 0x8120);
             chip8.V[1] = 0x3
             chip8.V[2] = 0x1;
             const snapshot = chip8Snapshot(chip8);
@@ -35,7 +35,7 @@ describe('0x8 Family', () => {
 
     describe('8XY1', () => {
         test('should set VX to VX OR VY', () => {
-            loadOpCode(chip8, 0x200, 0x8121);
+            writeWord(chip8, 0x200, 0x8121);
             chip8.V[1] = 0x3
             chip8.V[2] = 0x1;
             const snapshot = chip8Snapshot(chip8);
@@ -53,7 +53,7 @@ describe('0x8 Family', () => {
 
     describe('8XY2', () => {
         test('should set VX to VX AND VY', () => {
-            loadOpCode(chip8, 0x200, 0x8122);
+            writeWord(chip8, 0x200, 0x8122);
             chip8.V[1] = 0x3
             chip8.V[2] = 0x1;
             const snapshot = chip8Snapshot(chip8);
@@ -71,7 +71,7 @@ describe('0x8 Family', () => {
 
     describe('8XY3', () => {
         test('should set VX to VX XOR VY', () => {
-            loadOpCode(chip8, 0x200, 0x8123);
+            writeWord(chip8, 0x200, 0x8123);
             chip8.V[1] = 0x3;
             chip8.V[2] = 0x1;
             const snapshot = chip8Snapshot(chip8);
@@ -89,7 +89,7 @@ describe('0x8 Family', () => {
 
     describe('8XY4', () => {
         test('should add the value of register VY to register VX and set VF to 01 if a carry occurs', () => {
-            loadOpCode(chip8, 0x200, 0x8124);
+            writeWord(chip8, 0x200, 0x8124);
             chip8.V[1] = 0x3;
             chip8.V[2] = 0x1;
             const snapshot = chip8Snapshot(chip8);
@@ -105,7 +105,7 @@ describe('0x8 Family', () => {
         });
 
         test('should add the value of register VY to register VX and set VF to 00 if a carry doest not occurs', () => {
-            loadOpCode(chip8, 0x200, 0x8124);
+            writeWord(chip8, 0x200, 0x8124);
             chip8.V[1] = 0xFF;
             chip8.V[2] = 0x1;
             const snapshot = chip8Snapshot(chip8);
@@ -123,7 +123,7 @@ describe('0x8 Family', () => {
 
     describe('8XY5', () => {
         test('should subtract the value of register VY from register VX and set VF to 00 if a borrow occurs', () => {
-            loadOpCode(chip8, 0x200, 0x8125);
+            writeWord(chip8, 0x200, 0x8125);
             chip8.V[1] = 0x1;
             chip8.V[2] = 0x3;
             const snapshot = chip8Snapshot(chip8);
@@ -139,7 +139,7 @@ describe('0x8 Family', () => {
         });
 
         test('should subtract the value of register VY from register VX and set VF to 01 if a borrow does not occurs', () => {
-            loadOpCode(chip8, 0x200, 0x8125);
+            writeWord(chip8, 0x200, 0x8125);
             chip8.V[1] = 0xFF;
             chip8.V[2] = 0x1;
             const snapshot = chip8Snapshot(chip8);
@@ -157,7 +157,7 @@ describe('0x8 Family', () => {
 
     describe('8XY6', () => {
         test('should store the value of register VY shifted right one bit in register VX and set VF to the least significant bit prior the shift', () => {
-            loadOpCode(chip8, 0x200, 0x8126);
+            writeWord(chip8, 0x200, 0x8126);
             chip8.V[1] = 0x1;
             chip8.V[2] = 0x3;
             const snapshot = chip8Snapshot(chip8);
@@ -175,7 +175,7 @@ describe('0x8 Family', () => {
 
     describe('8XY7', () => {
         test('should set register VX to the value of VY minus VX set VF to 00 if a borrow occurs', () => {
-            loadOpCode(chip8, 0x200, 0x8127);
+            writeWord(chip8, 0x200, 0x8127);
             chip8.V[1] = 0x3;
             chip8.V[2] = 0x1;
             const snapshot = chip8Snapshot(chip8);
@@ -191,7 +191,7 @@ describe('0x8 Family', () => {
         });
 
         test('should set register VX to the value of VY minus VX set VF to 01 if a does not borrow occurs', () => {
-            loadOpCode(chip8, 0x200, 0x8127);
+            writeWord(chip8, 0x200, 0x8127);
             chip8.V[1] = 0x1;
             chip8.V[2] = 0x3;
             const snapshot = chip8Snapshot(chip8);
@@ -209,7 +209,7 @@ describe('0x8 Family', () => {
 
     describe('8XYE', () => {
         test('should store the value of register VY shifted left one bit in register VX and set VF to the least significant bit prior the shift', () => {
-            loadOpCode(chip8, 0x200, 0x812E);
+            writeWord(chip8, 0x200, 0x812E);
             chip8.V[1] = 0x3;
             chip8.V[2] = 0x8;
             const snapshot = chip8Snapshot(chip8);

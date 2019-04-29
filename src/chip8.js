@@ -77,7 +77,7 @@ export class Chip8 {
      * @param {number} data - 2 bytes of data
      * @returns {Chip8} - The chip8 itself
      */
-    load(addr, data) {
+    writeWord(addr, data) {
         this.memory[addr] = (data >> 8) & 0xFF;
         this.memory[addr + 1] = data & 0xFF;
         return this;
@@ -99,6 +99,14 @@ export class Chip8 {
             this.shouldDraw = false;
             this.screen.draw(this.display);
         }
+    }
+
+    /**
+     * Throws a formatted exception for invalid op codes
+     * @param {number} opCode 
+     */
+    throwInvalidOpCode(opCode) {
+        throw new Error(`Invalid instruction opCode=${opCode.toString(16)}`);
     }
 
     /**
@@ -129,7 +137,7 @@ export class Chip8 {
             case 0xD: this.opCodeFamily_0xD(opCode); return;
             case 0xE: this.opCodeFamily_0xE(opCode); return;
             case 0xF: this.opCodeFamily_0xF(opCode); return;
-            default: throw new Error(`OpCode from family ${o.toString(16)} does not exist!`);
+            default: this.throwInvalidOpCode(opCode); return;
         }
     }
 
@@ -186,7 +194,7 @@ export class Chip8 {
         const x = opCode_x(opCode);
         const y = opCode_y(opCode);
         const n = opCode_n(opCode);
-        if (n !== 0x0) throw new Error(`OpCode ${opcode.toString(16)} from family 5 does not exist!`);
+        if (n !== 0x0) this.throwInvalidOpCode(opCode);
 
         // 5XY0 - Skip the following instruction if the value of register VX is equal to the value of register VY
         if (this.V[x] === this.V[y]) {
@@ -268,7 +276,7 @@ export class Chip8 {
                 this.V[x] = leftShift;
                 this.V[0xF] = this.V[y] & 0x1;
                 break;
-            default: throw new Error(`OpCode ${opCode.toString(16)} from family 8 does not exist!`);
+            default: this.throwInvalidOpCode(opCode); return;
         }
     }
 
@@ -277,7 +285,7 @@ export class Chip8 {
         const y = opCode_y(opCode);
         const n = opCode_n(opCode);
 
-        if (n !== 0) throw new Error(`OpCode ${opCode.toString(16)} from family 9 does not exist!`);
+        if (n !== 0) this.throwInvalidOpCode(opCode);
         // 9XY0 - Skip the following instruction if the value of register VX is not equal to the value of register VY
         if (this.V[x] !== this.V[y]) {
             this.PC += 2;
@@ -352,7 +360,7 @@ export class Chip8 {
                     this.PC += 2;
                 }
                 break;
-            default: throw new Error(`OpCode ${opCode.toString(16)} from family E does not exist!`);
+            default: this.throwInvalidOpCode(opCode); return;
         }
     }
 
@@ -408,7 +416,7 @@ export class Chip8 {
                     this.I = (this.I + 1) & 0xFFFF;
                 }
                 break;
-            default: throw new Error(`OpCode ${opCode.toString(16)} from family F does not exist!`);
+            default: this.throwInvalidOpCode(opCode); return;
         }
     }
 }

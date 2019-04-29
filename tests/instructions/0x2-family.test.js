@@ -7,7 +7,7 @@ describe('0x2 Family', () => {
 
     describe('0x2NNN', () => {
         test('should execute subroutine starting at address NNN', () => {
-            loadOpCode(chip8, 0x200, 0x2EEE);
+            writeWord(chip8, 0x200, 0x2EEE);
             const snapshot = chip8Snapshot(chip8);
 
             snapshot.stack[snapshot.SP] = snapshot.PC + 2;

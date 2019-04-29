@@ -87,8 +87,8 @@ global.isChip8Equal = (value, other) => {
     return true;
 };
 
-global.loadOpCode = (chip8, addr, opCode) => {
-    chip8.load(addr, opCode);
+global.writeWord = (chip8, addr, opCode) => {
+    chip8.writeWord(addr, opCode);
 }
 
 function compareArray(a, b) {

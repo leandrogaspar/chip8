@@ -7,7 +7,7 @@ describe('0x1 Family', () => {
 
     describe('0x1NNN', () => {
         test('should jump to address NNN', () => {
-            loadOpCode(chip8, 0x200, 0x1EEE);
+            writeWord(chip8, 0x200, 0x1EEE);
             const snapshot = chip8Snapshot(chip8);
 
             snapshot.PC = 0xEEE;
