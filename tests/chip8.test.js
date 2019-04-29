@@ -40,8 +40,8 @@ describe('Chip8', () => {
 
     describe('Custom constructor options', () => {
         test('it can have a custom memory size', () => {
-            const customChip8 = createChip8({ memSize: 2 });
-            const expected = createMockChip8({ memory: new Uint8Array(2) });
+            const customChip8 = createChip8({ memSize: 200 });
+            const expected = createMockChip8({ memory: new Uint8Array(200) });
 
             const equals = isChip8Equal(customChip8, expected);
             expect(equals).toBe(true);

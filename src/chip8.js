@@ -1,4 +1,5 @@
 import { opCode_nnn, opCode_nn, opCode_n, opCode_x, opCode_y } from './util';
+import { fontSprites } from './font-sprites'
 
 /**
  * CHIP-8 Interpreter
@@ -34,6 +35,9 @@ export class Chip8 {
      */
     reset() {
         this.memory = new Uint8Array(this.MEM_SIZE);
+        fontSprites.forEach((element, index) => {
+            this.memory[index] = element;
+        })
         this.V = new Uint8Array(16);
         this.I = 0;
         this.DT = 0;
@@ -42,6 +46,7 @@ export class Chip8 {
         this.SP = 0;
         this.stack = new Uint16Array(this.STACK_SIZE);
         this.display = new Array(this.DISPLAY_SIZE).fill(0);
+        this.keys = {};
     }
 
     /**
@@ -155,7 +160,7 @@ export class Chip8 {
         const x = opCode_x(opCode);
         const y = opCode_y(opCode);
         const n = opCode_n(opCode);
-        if (n !== 0x0) throw new Error(`OpCode ${opcode.toString(16)} does not exist!`);
+        if (n !== 0x0) throw new Error(`OpCode ${opcode.toString(16)} from family 5 does not exist!`);
 
         // 5XY0 - Skip the following instruction if the value of register VX is equal to the value of register VY
         if (this.V[x] === this.V[y]) {
@@ -237,7 +242,7 @@ export class Chip8 {
                 this.V[x] = leftShift;
                 this.V[0xF] = this.V[y] & 0x1;
                 break;
-            default: throw new Error(`OpCode ${opCode.toString(16)} does not exist!`);
+            default: throw new Error(`OpCode ${opCode.toString(16)} from family 8 does not exist!`);
         }
     }
 
@@ -246,7 +251,7 @@ export class Chip8 {
         const y = opCode_y(opCode);
         const n = opCode_n(opCode);
 
-        if (n !== 0) throw new Error(`OpCode ${opCode.toString(16)} does not exist!`);
+        if (n !== 0) throw new Error(`OpCode ${opCode.toString(16)} from family 9 does not exist!`);
         // 9XY0 - Skip the following instruction if the value of register VX is not equal to the value of register VY
         if (this.V[x] !== this.V[y]) {
             this.PC += 2;
@@ -303,23 +308,78 @@ export class Chip8 {
     }
 
     opCodeFamily_0xE(opCode) {
-        // EX9E - Skip the following instruction if the key corresponding to the hex value currently stored in register VX is pressed
-        // EXA1 - Skip the following instruction if the key corresponding to the hex value currently stored in register VX is not pressed
-        throw new Error('Not supported!');
+        const x = opCode_x(opCode);
+        const nn = opCode_nn(opCode);
+
+        switch (nn) {
+            // EX9E - Skip the following instruction if the key corresponding to the hex value currently stored in register VX is pressed
+            case 0x9E:
+                const keyPressed = this.V[x];
+                if (this.keys[keyPressed]) {
+                    this.PC += 2;
+                }
+                break;
+            // EXA1 - Skip the following instruction if the key corresponding to the hex value currently stored in register VX is not pressed
+            case 0xA1:
+                const keyNotPresseed = this.V[x];
+                if (!this.keys[keyNotPresseed]) {
+                    this.PC += 2;
+                }
+                break;
+            default: throw new Error(`OpCode ${opCode.toString(16)} from family E does not exist!`);
+        }
     }
 
     opCodeFamily_0xF(opCode) {
-        // FX07 - Store the current value of the delay timer in register VX
-        // FX0A	- Wait for a keypress and store the result in register VX
-        // FX15 - Set the delay timer to the value of register VX
-        // FX18 - Set the sound timer to the value of register VX
-        // FX1E - Add the value stored in register VX to register I
-        // FX29 - Set I to the memory address of the sprite data corresponding to the hexadecimal digit stored in register VX
-        // FX33 - Store the binary-coded decimal equivalent of the value stored in register VX at addresses I, I+1, and I+2
-        /* FX55 - Store the values of registers V0 to VX inclusive in memory starting at address I
-                - I is set to I + X + 1 after operation */
-        /* FX65 - Fill registers V0 to VX inclusive with the values stored in memory starting at address I
-                - I is set to I + X + 1 after operation */
-        throw new Error('Not supported!');
+        const x = opCode_x(opCode);
+        const nn = opCode_nn(opCode);
+
+        switch (nn) {
+            // FX07 - Store the current value of the delay timer in register VX
+            case 0x07:
+                this.V[x] = this.DT;
+                break;
+            // FX0A	- Wait for a keypress and store the result in register VX
+            case 0x0A: throw new Error('TODO PLACEHOLDER');
+            // FX15 - Set the delay timer to the value of register VX
+            case 0x15:
+                this.DT = this.V[x];
+                break;
+            // FX18 - Set the sound timer to the value of register VX
+            case 0x18:
+                this.ST = this.V[x];
+                break;
+            // FX1E - Add the value stored in register VX to register I
+            case 0x1E:
+                this.I = (this.I + this.V[x]) & 0xFFFF;
+                break;
+            // FX29 - Set I to the memory address of the sprite data corresponding to the hexadecimal digit stored in register VX
+            case 0x29:
+                this.I = (this.V[x] & 0xF) * 5;
+                break;
+            // FX33 - Store the binary-coded decimal equivalent of the value stored in register VX at addresses I, I+1, and I+2
+            case 0x33:
+                this.memory[this.I] = Math.floor(this.V[x] / 100) % 10;
+                this.memory[this.I + 1] = Math.floor(this.V[x] / 10) % 10;
+                this.memory[this.I + 2] = this.V[x] % 10;
+                break;
+            /* FX55 - Store the values of registers V0 to VX inclusive in memory starting at address I
+                    - I is set to I + X + 1 after operation */
+            case 0x55:
+                for (let i = 0; i <= x; i++) {
+                    this.memory[this.I] = this.V[i];
+                    this.I = (this.I + 1) & 0xFFFF;
+                }
+                break;
+            /* FX65 - Fill registers V0 to VX inclusive with the values stored in memory starting at address I
+                    - I is set to I + X + 1 after operation */
+            case 0x65:
+                for (let i = 0; i <= x; i++) {
+                    this.V[i] = this.memory[this.I];
+                    this.I = (this.I + 1) & 0xFFFF;
+                }
+                break;
+            default: throw new Error(`OpCode ${opCode.toString(16)} from family F does not exist!`);
+        }
     }
 }

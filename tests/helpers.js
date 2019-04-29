@@ -1,4 +1,5 @@
 import { Chip8 } from '../src/chip8';
+import { fontSprites } from '../src/font-sprites';
 
 global.createChip8 = (options) => {
     return new Chip8(options);
@@ -6,7 +7,7 @@ global.createChip8 = (options) => {
 
 global.createMockChip8 = (options) => {
     options = options || {};
-    return {
+    const mockChip8 = {
         memory: options.memory || new Uint8Array(4096),
         V: options.V || new Uint8Array(16),
         I: options.I || 0,
@@ -17,6 +18,10 @@ global.createMockChip8 = (options) => {
         stack: options.stack || new Uint16Array(16),
         display: options.display || new Array(64*32).fill(0),
     };
+    fontSprites.forEach((element, index) => {
+        mockChip8.memory[index] = element;
+    });
+    return mockChip8;
 };
 
 global.chip8Snapshot = (chip8) => {
@@ -45,7 +50,7 @@ global.isChip8Equal = (value, other) => {
     }
 
     if (value.I !== other.I) {
-        console.error('I register does not match!');
+        console.error(`I register does not match! a=[${value.I}] b=[${other.I}]`);
         return false;
     }
 
