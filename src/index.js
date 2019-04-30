@@ -1,33 +1,56 @@
 import { Chip8 } from "./chip8.js";
 import { Screen } from "./screen.js";
 
+let rom = [];
 const chip8 = new Chip8();
-const screen = new Screen(document.getElementById('screen'));
+chip8.screen = new Screen(document.getElementById('screen'));
+chip8.screen.draw(chip8.display);
+let clockHandle;
+let timerHandler;
 
-screen.draw(chip8.display);
+function onStart() {
+    if (clockHandle) {
+        clearInterval(clockHandle);
+        clockHandle = null;
+    }
 
-function start() {
+    if (timerHandler) {
+        clearInterval(timerHandler);
+        timerHandler = null;
+    }
+
     chip8.reset();
-    chip8.writeWord(0x200, 0xA20A); // Load sprite location on the index
-    chip8.writeWord(0x202, 0x6000);
-    chip8.writeWord(0x204, 0x6100);
-    chip8.writeWord(0x206, 0xD017);
-    chip8.writeWord(0x208, 0x1200); // Loop back to 0x200
-    chip8.writeWord(0x20A, 0x7C00); // 0b1111100 -> Letter E
-    chip8.writeWord(0x20B, 0x4000); // 0b1000000
-    chip8.writeWord(0x20C, 0x4000); // 0b1000000
-    chip8.writeWord(0x20D, 0x7C00); // 0b1111100
-    chip8.writeWord(0x20E, 0x4000); // 0b1000000
-    chip8.writeWord(0x20f, 0x4000); // 0b1000000
-    chip8.writeWord(0x210, 0x7C00); // 0b1111100
-    chip8.screen = screen;
+    let addr = 0x200;
+    console.log(`Rom size ${rom.length}`);
+    rom.forEach((byte) => {
+        chip8.writeByte(addr, byte);
+        addr++;
+    });
 
-    setInterval(() => {
+    clockHandle = setInterval(() => {
         chip8.cycle();
-    }, 200);
+    }, 2);
+
+    timerHandler = setInterval(() => {
+        const newDt = chip8.DT - 1;
+        chip8.DT = newDt > 0 ? newDt : 0;
+        const newSt = chip8.ST - 1;
+        chip8.ST = newSt > 0 ? newSt : 0;
+    }, 1/60);
 }
 
+function handleFileSelect(evt) {
+    const file = evt.target.files[0];
 
-const drawBtn = document.querySelector('#start');
+    const reader = new FileReader();
 
-drawBtn.addEventListener('click', start);
+    reader.onload = function (event) {
+        const arrayBufferNew = event.target.result;
+        rom = new Uint8Array(arrayBufferNew);
+    };
+
+    reader.readAsArrayBuffer(file);
+}
+
+document.querySelector('#start').addEventListener('click', onStart);
+document.getElementById('file').addEventListener('change', handleFileSelect, false);

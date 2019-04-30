@@ -49,6 +49,7 @@ export class Chip8 {
         this.keys = {};
         this.waitingKey = false;
         this.waitingKeyTarget = -1;
+        this.screen.draw(this.display);
     }
 
     /**
@@ -78,9 +79,19 @@ export class Chip8 {
      * @returns {Chip8} - The chip8 itself
      */
     writeWord(addr, data) {
-        this.memory[addr] = (data >> 8) & 0xFF;
-        this.memory[addr + 1] = data & 0xFF;
+        this.writeByte(addr, (data >> 8) & 0xFF);
+        this.writeByte(addr + 1, data & 0xFF);
         return this;
+    }
+
+    /**
+     * Write a byte at the address
+     * @param {number} addr - Data target
+     * @param {number} data - byte
+     * @returns {Chip8} - The chip8 itself
+     */
+    writeByte(addr, data) {
+        this.memory[addr] = data;
     }
 
     /**
