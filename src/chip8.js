@@ -285,7 +285,7 @@ export class Chip8 {
             case 0xE:
                 const leftShift = this.V[y] << 1;
                 this.V[x] = leftShift;
-                this.V[0xF] = this.V[y] & 0x1;
+                this.V[0xF] = (this.V[y] >> 7) & 0x1;
                 break;
             default: this.throwInvalidOpCode(opCode); return;
         }

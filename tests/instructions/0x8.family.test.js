@@ -208,16 +208,16 @@ describe('0x8 Family', () => {
     });
 
     describe('8XYE', () => {
-        test('should store the value of register VY shifted left one bit in register VX and set VF to the least significant bit prior the shift', () => {
+        test('should store the value of register VY shifted left one bit in register VX and set VF to the most significant bit prior the shift', () => {
             writeWord(chip8, 0x200, 0x812E);
             chip8.V[1] = 0x3;
-            chip8.V[2] = 0x8;
+            chip8.V[2] = 0xFF;
             const snapshot = chip8Snapshot(chip8);
 
             snapshot.PC += 2;
-            snapshot.V[1] = 0x8 << 1
-            snapshot.V[2] = 0x8;
-            snapshot.V[0xF] = 0x8 & 0x1;
+            snapshot.V[1] = 0xFF << 1
+            snapshot.V[2] = 0xFF;
+            snapshot.V[0xF] = (0xFF >> 7) & 0x1;
 
             chip8.cycle();
             const equals = isChip8Equal(chip8, snapshot);
