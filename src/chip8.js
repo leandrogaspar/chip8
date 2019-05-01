@@ -73,6 +73,28 @@ export class Chip8 {
     }
 
     /**
+     * Decreases the delay timer by 1
+     */
+    delayTimerTick() {
+        if (this.DT > 0) {
+            this.DT -= 1;
+        }
+    }
+
+    /**
+     * Decreases the sound timer by 1 and stop the beep
+     */
+    soundTimerTick() {
+        if (this.ST > 0) {
+            this.ST -= 1;
+        }
+
+        if (this.ST) {
+            console.log('Stop sound!');
+        }
+    }
+
+    /**
      * Load 2 bytes of data at the specified address
      * @param {number} addr - Data target
      * @param {number} data - 2 bytes of data

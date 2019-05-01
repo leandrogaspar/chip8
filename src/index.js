@@ -1,25 +1,33 @@
 import { Chip8 } from "./chip8.js";
 import { Screen } from "./screen.js";
 
+
+// 1	2	3	C
+// 4	5	6	D
+// 7	8	9	E
+// A	0	B	F
+const keyCodeMap = {
+    'Digit1': 0x1, 'Digit2': 0x2, 'Digit3': 0x3, 'Digit4': 0xC,
+    'KeyQ': 0x4, 'KeyW': 0x5, 'KeyE': 0x6, 'KeyR': 0xD,
+    'KeyA': 0x7, 'KeyS': 0x8, 'KeyD': 0x9, 'KeyF': 0xE,
+    'KeyZ': 0xA, 'KeyX': 0x0, 'KeyC': 0xB, 'KeyV': 0xF,
+};
+
+let intervalHandle;
+let cyclesPerTick = 10;
 let rom = [];
 const chip8 = new Chip8();
 chip8.screen = new Screen(document.getElementById('screen'));
 chip8.screen.draw(chip8.display);
-let clockHandle;
-let timerHandler;
 
 function onStart() {
-    if (clockHandle) {
-        clearInterval(clockHandle);
-        clockHandle = null;
-    }
 
-    if (timerHandler) {
-        clearInterval(timerHandler);
-        timerHandler = null;
+    if (intervalHandle) {
+        clearInterval(intervalHandle);
     }
 
     chip8.reset();
+    // Load the ROM
     let addr = 0x200;
     console.log(`Rom size ${rom.length}`);
     rom.forEach((byte) => {
@@ -27,19 +35,22 @@ function onStart() {
         addr++;
     });
 
-    clockHandle = setInterval(() => {
-        chip8.cycle();
-    }, 2);
+    // Start our CPU at 60Hz
+    const frequency = 1000 / 60;
+    intervalHandle = setInterval(() => {
+        let remainingCycles = cyclesPerTick;
+        do {
+            chip8.cycle();
+            remainingCycles--;
+        } while(remainingCycles > 0);
 
-    timerHandler = setInterval(() => {
-        const newDt = chip8.DT - 1;
-        chip8.DT = newDt > 0 ? newDt : 0;
-        const newSt = chip8.ST - 1;
-        chip8.ST = newSt > 0 ? newSt : 0;
-    }, 1/60);
+        chip8.soundTimerTick();
+        chip8.delayTimerTick();
+    }, frequency);
+
 }
 
-function handleFileSelect(evt) {
+function onFileChange(evt) {
     const file = evt.target.files[0];
 
     const reader = new FileReader();
@@ -52,5 +63,23 @@ function handleFileSelect(evt) {
     reader.readAsArrayBuffer(file);
 }
 
+function onKeyUp(evt) {
+    console.log(`Up ${evt.code}`);
+    chip8.pressKey(keyCodeMap[evt.code]);
+}
+
+function onKeyDown(evt) {
+    console.log(`Down ${evt.code}`);
+    chip8.releaseKey(keyCodeMap[evt.code]);
+}
+
+function onTickConfigChange(evt) {
+    console.log(evt);
+    cyclesPerTick = Number.parseInt(evt.target.value);
+}
+
 document.querySelector('#start').addEventListener('click', onStart);
-document.getElementById('file').addEventListener('change', handleFileSelect, false);
+document.getElementById('file').addEventListener('change', onFileChange, false);
+document.getElementById('cyclesPerTick').addEventListener('change', onTickConfigChange, false);
+document.addEventListener('keyup', onKeyUp);
+document.addEventListener('keydown', onKeyDown);
