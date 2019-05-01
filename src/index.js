@@ -64,22 +64,22 @@ function onFileChange(evt) {
 }
 
 function onKeyUp(evt) {
-    console.log(`Up ${evt.code}`);
     chip8.pressKey(keyCodeMap[evt.code]);
 }
 
 function onKeyDown(evt) {
-    console.log(`Down ${evt.code}`);
     chip8.releaseKey(keyCodeMap[evt.code]);
 }
 
 function onTickConfigChange(evt) {
-    console.log(evt);
+    console.log(`New cyclesPerTick=${evt.target.value}`);
     cyclesPerTick = Number.parseInt(evt.target.value);
 }
 
 document.querySelector('#start').addEventListener('click', onStart);
 document.getElementById('file').addEventListener('change', onFileChange, false);
-document.getElementById('cyclesPerTick').addEventListener('change', onTickConfigChange, false);
+const cycleConfig = document.getElementById('cyclesPerTick');
+cycleConfig.addEventListener('change', onTickConfigChange, false);
+cycleConfig.value = cyclesPerTick;
 document.addEventListener('keyup', onKeyUp);
 document.addEventListener('keydown', onKeyDown);
