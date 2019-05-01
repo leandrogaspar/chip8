@@ -93,7 +93,10 @@ global.writeWord = (chip8, addr, opCode) => {
 
 function compareArray(a, b) {
     for (let i = a.length; -1 < i; i -= 1) {
-        if ((a[i] !== b[i])) return false;
+        if (a[i] !== b[i]) {
+            console.error(`a[${i.toString(16)}]=[${a[i].toString(16)}] b[${i.toString(16)}]=[${b[i].toString(16)}]`);
+            return false;
+        }
     }
     return true;
 }

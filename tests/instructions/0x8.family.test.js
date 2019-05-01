@@ -156,16 +156,30 @@ describe('0x8 Family', () => {
     });
 
     describe('8XY6', () => {
-        test('should store the value of register VY shifted right one bit in register VX and set VF to the least significant bit prior the shift', () => {
+        test('should store the value of register VY shifted right one bit in register VX and set VF to 0', () => {
             writeWord(chip8, 0x200, 0x8126);
-            chip8.V[1] = 0x1;
-            chip8.V[2] = 0x3;
+            chip8.V[1] = 0xFF;
+            chip8.V[2] = 0b11111110;
             const snapshot = chip8Snapshot(chip8);
 
             snapshot.PC += 2;
-            const shift = 0x3 >> 1;
-            snapshot.V[1] = shift;
-            snapshot.V[0xF] = 0x3 & 0x1;
+            snapshot.V[1] = snapshot.V[2] = 0b1111111;
+            snapshot.V[0xF] = 0;
+
+            chip8.cycle();
+            const equals = isChip8Equal(chip8, snapshot);
+            expect(equals).toBe(true);
+        });
+
+        test('should store the value of register VY shifted right one bit in register VX and set VF to 1', () => {
+            writeWord(chip8, 0x200, 0x8126);
+            chip8.V[1] = 0xFF;
+            chip8.V[2] = 0b11111111;
+            const snapshot = chip8Snapshot(chip8);
+
+            snapshot.PC += 2;
+            snapshot.V[1] = snapshot.V[2] = 0b1111111;
+            snapshot.V[0xF] = 1;
 
             chip8.cycle();
             const equals = isChip8Equal(chip8, snapshot);
@@ -208,16 +222,30 @@ describe('0x8 Family', () => {
     });
 
     describe('8XYE', () => {
-        test('should store the value of register VY shifted left one bit in register VX and set VF to the most significant bit prior the shift', () => {
+        test('should store the value of register VY shifted left one bit in register VX and set VF to 0', () => {
             writeWord(chip8, 0x200, 0x812E);
             chip8.V[1] = 0x3;
-            chip8.V[2] = 0xFF;
+            chip8.V[2] = 0b00000010;
             const snapshot = chip8Snapshot(chip8);
 
             snapshot.PC += 2;
-            snapshot.V[1] = 0xFF << 1
-            snapshot.V[2] = 0xFF;
-            snapshot.V[0xF] = (0xFF >> 7) & 0x1;
+            snapshot.V[1] = snapshot.V[2] = 0b00000100;
+            snapshot.V[0xF] = 0;
+
+            chip8.cycle();
+            const equals = isChip8Equal(chip8, snapshot);
+            expect(equals).toBe(true);
+        });
+
+        test('should store the value of register VY shifted left one bit in register VX and set VF to 1', () => {
+            writeWord(chip8, 0x200, 0x812E);
+            chip8.V[1] = 0x3;
+            chip8.V[2] = 0b10000010;
+            const snapshot = chip8Snapshot(chip8);
+
+            snapshot.PC += 2;
+            snapshot.V[1] = snapshot.V[2] = 0b00000100;
+            snapshot.V[0xF] = 1;
 
             chip8.cycle();
             const equals = isChip8Equal(chip8, snapshot);

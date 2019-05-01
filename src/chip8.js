@@ -266,11 +266,12 @@ export class Chip8 {
                 this.V[x] = xMinusY & 0xFF;
                 break;
             /* 8XY6 - Store the value of register VY shifted right one bit in register VX
-                    - Set register VF to the least significant bit prior to the shift */
+                    - Set register VF to the least significant bit prior to the shift
+                Beware that this will also change the value of VY, see Mastering Chip8.
+            */
             case 0x6:
-                const rightShift = this.V[y] >> 1;
-                this.V[x] = rightShift;
-                this.V[0xF] = this.V[y] & 0x1;
+                this.V[0xF] = this.V[y] & 0b00000001;
+                this.V[x] = this.V[y] = this.V[y] >> 1;
                 break;
             /* 8XY7 - Set register VX to the value of VY minus VX
                     - Set VF to 00 if a borrow occurs
@@ -281,11 +282,12 @@ export class Chip8 {
                 this.V[x] = yMinusX & 0xFF;
                 break;
             /* 8XYE - Store the value of register VY shifted left one bit in register VX
-                    - Set register VF to the most significant bit prior to the shift */
+                    - Set register VF to the most significant bit prior to the shift
+                Beware that this will also change the value of VY, see Mastering Chip8.
+            */
             case 0xE:
-                const leftShift = this.V[y] << 1;
-                this.V[x] = leftShift;
-                this.V[0xF] = (this.V[y] >> 7) & 0x1;
+                this.V[0xF] = (this.V[y] & 0b10000000) >> 7;
+                this.V[x] = this.V[y] = this.V[y] << 1;
                 break;
             default: this.throwInvalidOpCode(opCode); return;
         }
