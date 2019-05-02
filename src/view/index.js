@@ -1,5 +1,5 @@
-import { Chip8 } from "./chip8.js";
-import { Screen } from "./screen.js";
+import { Chip8 } from "../interpreter/chip8";
+import { Screen } from "./components/screen";
 
 
 // 1	2	3	C

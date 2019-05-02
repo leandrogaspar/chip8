@@ -2,6 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
+    entry: './src/view/index.js',
     module: {
         rules: [{
             test: /\.js$/,
@@ -14,8 +15,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             title: 'CHIP-8',
-            // Load a custom template (lodash by default)
-            template: 'src/index.html'
+            template: './src/view/index.html'
         }),
         new CleanWebpackPlugin(),
     ],
