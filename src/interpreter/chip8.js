@@ -124,7 +124,7 @@ export class Chip8 {
             return;
         }
 
-        const opcode = this.memory[this.PC] << 8 | this.memory[this.PC + 1];
+        const opcode = (this.memory[this.PC] << 8) | this.memory[this.PC + 1];
 
         this.executeOpCode(opcode);
 
