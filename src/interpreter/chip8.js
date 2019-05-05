@@ -1,5 +1,5 @@
 import { opCode_nnn, opCode_nn, opCode_n, opCode_x, opCode_y } from './util';
-import { fontSprites } from './font-sprites'
+import fontSprites from './font-sprites'
 
 /**
  * CHIP-8 Interpreter
@@ -8,7 +8,7 @@ import { fontSprites } from './font-sprites'
  * - http://devernay.free.fr/hacks/chip8/C8TECH10.HTM - by Thomas P. Greene
  * - http://mattmik.com/files/chip8/mastering/chip8.html - By Matthew Mikolay
  */
-export class Chip8 {
+class Chip8 {
     /**
      * @typedef {object} Chip8Options
      * @property {number} [memSize=4096] - The interpreter memory map size
@@ -455,3 +455,5 @@ export class Chip8 {
         }
     }
 }
+
+export default Chip8;

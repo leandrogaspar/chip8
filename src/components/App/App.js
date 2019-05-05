@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
 
-import { Chip8 } from "./interpreter/chip8";
-import { Screen } from "./screen";
+import Chip8 from "../../interpreter/chip8";
+import Screen from "../Screen";
 
 // 1	2	3	C
 // 4	5	6	D
