@@ -1,5 +1,5 @@
-import { Chip8 } from './interpreter/chip8';
-import { fontSprites } from './interpreter/font-sprites';
+import Chip8 from './interpreter/chip8';
+import fontSprites from './interpreter/font-sprites';
 
 global.createChip8 = (options) => {
     return new Chip8(options);

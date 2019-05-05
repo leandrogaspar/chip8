@@ -1,7 +1,7 @@
 /**
  * Class responsible for rendering display data to a Canvas.
  */
-export class Screen {
+class Screen {
     /**
      * @typedef {object} Color
      * @property {number} r - Red
@@ -77,3 +77,5 @@ export class Screen {
         this.ctx.fillRect(scaledX, scaledY, pixelSize, pixelSize);
     }
 }
+
+export default Screen;
