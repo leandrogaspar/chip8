@@ -1,7 +1,52 @@
-/**
- * Class responsible for rendering display data to a Canvas.
- */
-class Screen {
+import React from 'react';
+import './Screen.css';
+
+class Screen extends React.Component {
+    constructor(props) {
+        super(props);
+        this.containerRef = React.createRef();
+        this.canvasRef = React.createRef();
+    }
+
+    /**
+     * Calculates the new size of the canvas.
+     * 
+     * The canvas must be the biggest rectangle that
+     * fits the container while mantain the aspect ratio
+     */
+    resizeCanvas() {
+        const containerWidth = this.containerRef.current.offsetWidth,
+            containerHeight = this.containerRef.current.offsetHeight;
+
+        const scale = Math.floor(Math.min(containerWidth / 64, containerHeight / 32));
+        this.canvasWidth = this.canvasRef.current.width = 64 * scale;
+        this.canvasHeight = this.canvasRef.current.height = 32 * scale;
+    }
+
+    /**
+     * Draw the display data on the Canvas element
+     */
+    draw() {
+        // Clear the screen
+        this.ctx.fillStyle = this.rgbFromColor(this.props.backgroundColor);
+        this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+
+        const pixelSize = this.canvasHeight / 32;
+
+        this.ctx.fillStyle = this.rgbFromColor(this.props.drawColor);
+        const displayData = this.props.displayData;
+        for (let i = 0; i < displayData.length; i++) {
+            const y = Math.floor(i / 64);
+            const x = i % 64;
+            if (displayData[i] !== 0) {
+                const scaledX = x * pixelSize,
+                    scaledY = y * pixelSize;
+                this.ctx.fillRect(scaledX, scaledY, pixelSize, pixelSize);
+            }
+        }
+        this.requestFrameId = window.requestAnimationFrame(this.draw.bind(this));
+    }
+
     /**
      * @typedef {object} Color
      * @property {number} r - Red
@@ -9,73 +54,44 @@ class Screen {
      * @property {number} b - Blue
      */
     /**
-     * @typedef {object} ScreenOptions
-     * @property {Color} [backgroundColor={r:40, g:40, b:40}] - The screen background color
-     * @property {Color} [drawColor={r:102, g:255, b:102}] - The screen draw color
-     * @property {number} [width=64] - Screen width
-     * @property {number} [height=32] - Screen height
+     * Transform a Color Object to the rgb color string
+     * @property {Color} color - Color object
      */
-    /**
-     * Constructs the Screen
-     * @param {Element} canvas - The HTML Cavans Element
-     * @param {ScreenOptions} [options] - The {@link ScreenOptions} options object
-     */
-    constructor(canvas, options) {
-        options = options || {};
-        this.backgroundColor = options.backgroundColor || { r: 40, g: 40, b: 40 };
-        this.drawColor = options.backgroundColor || { r: 102, g: 255, b: 102 };
-        this.width = options.width || 64;
-        this.height = options.height || 32;
-        this.canvas = canvas;
-        this.ctx = this.canvas.getContext('2d');
+    rgbFromColor(color) {
+        return `rgb(${color.r},${color.g},${color.b})`;
     }
 
-    /**
-     * Draw the display data on the Canvas element
-     * @param {Array} displayData - Array with the current display data
-     */
-    draw(displayData) {
-        const canvasWidth = this.canvas.width;
-        const canvasHeight = this.canvas.height;
-
-        const pixelSize = canvasHeight / this.height;
-
-        // Clear the screen
-        this.ctx.fillStyle = `rgb(${this.backgroundColor.r},${this.backgroundColor.g},${this.backgroundColor.b})`;
-        this.ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-
-        const drawColor = `rgb(${this.drawColor.r},${this.drawColor.g},${this.drawColor.b})`;
-        for (let i = 0; i < displayData.length; i++) {
-            const y = Math.floor(i / this.width);
-            const x = i % this.width;
-            if (displayData[i] !== 0) {
-                this._drawPixel(x, y, pixelSize, drawColor);
-            }
-        }
+    componentDidMount() {
+        this.ctx = this.canvasRef.current.getContext("2d");
+        this.canvasWidth = this.canvasRef.current.width;
+        this.canvasHeight = this.canvasRef.current.height;
+        this.resizeCanvas();
+        this.requestFrameId = window.requestAnimationFrame(this.draw.bind(this));
+        window.addEventListener("resize", this.resizeCanvas.bind(this));
     }
 
-    /**
-     * Change the background color
-     * @param {Color} color - The new background color
-     */
-    setBackGroundColor(color) {
-        this.backgroundColor = color;
+    componentWillUnmount() {
+        window.cancelAnimationFrame(this.requestFrameId);
+        window.removeEventListener("resize", this.resizeCanvas.bind(this));
     }
 
-    /**
-     * Change the draw color
-     * @param {Color} color - The new draw color
-     */
-    setDrawColor(color) {
-        this.drawColor = color;
+    shouldComponentUpdate() {
+        return false;
     }
 
-    _drawPixel(x, y, pixelSize, color) {
-        this.ctx.fillStyle = color;
-        const scaledX = x * pixelSize;
-        const scaledY = y * pixelSize;
-        this.ctx.fillRect(scaledX, scaledY, pixelSize, pixelSize);
+    render() {
+        return (
+            <section ref={this.containerRef} className="ScreenContainer">
+                <canvas ref={this.canvasRef} className="ScreenCanvas"></canvas>
+            </section>
+        );
     }
+}
+
+Screen.defaultProps = {
+    backgroundColor: { r: 40, g: 40, b: 40 },
+    drawColor: { r: 102, g: 255, b: 102 },
+    displayData: new Array(64 * 32).fill(0)
 }
 
 export default Screen;

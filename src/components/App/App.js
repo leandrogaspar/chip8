@@ -18,10 +18,14 @@ import Screen from "../Screen";
 class App extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      displayData: new Array(0).fill(0)
+    };
     this.myRef = React.createRef();
     this.intervalHandle = null;
     this.cyclesPerTick = 10;
     this.rom = [];
+    this.chip8 = new Chip8();
   }
 
   handleFile = (evt) => {
@@ -64,14 +68,11 @@ class App extends React.Component {
         remainingCycles--;
       } while (remainingCycles > 0);
 
+      this.setState({ displayData: this.chip8.display });
+
       this.chip8.soundTimerTick();
       this.chip8.delayTimerTick();
     }, frequency);
-  }
-
-  componentDidMount() {
-    this.chip8 = new Chip8();
-    this.chip8.screen = new Screen(this.myRef.current);
   }
 
   render() {
@@ -79,7 +80,7 @@ class App extends React.Component {
       <div className="App">
         <input type="file" id="file" onChange={this.handleFile} />
         <button id="start" onClick={this.handleStart}>Start!</button>
-        <canvas id="screen" width="640" height="320" ref={this.myRef}></canvas>
+        <Screen displayData={this.state.displayData}></Screen>
       </div>);
   }
 }
