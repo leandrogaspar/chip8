@@ -3,6 +3,7 @@ import './App.css';
 
 import Chip8 from "../../interpreter/chip8";
 import Screen from "../Screen";
+import VRegisters from "../VRegisters";
 
 // 1	2	3	C
 // 4	5	6	D
@@ -19,7 +20,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      displayData: new Array(0).fill(0)
+      displayData: new Array(0).fill(0),
+      v: new Uint8Array(16)
     };
     this.myRef = React.createRef();
     this.intervalHandle = null;
@@ -68,7 +70,10 @@ class App extends React.Component {
         remainingCycles--;
       } while (remainingCycles > 0);
 
-      this.setState({ displayData: this.chip8.display });
+      this.setState({
+        displayData: this.chip8.display,
+        v: this.chip8.V.slice(0)
+      });
 
       this.chip8.soundTimerTick();
       this.chip8.delayTimerTick();
@@ -80,6 +85,7 @@ class App extends React.Component {
       <div className="App">
         <input type="file" id="file" onChange={this.handleFile} />
         <button id="start" onClick={this.handleStart}>Start!</button>
+        <VRegisters v={this.state.v}></VRegisters>
         <Screen displayData={this.state.displayData}></Screen>
       </div>);
   }
