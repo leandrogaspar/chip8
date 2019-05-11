@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/chip8/static/css/main.07a433f7.chunk.css",
+    "main.css": "/chip8/static/css/main.5d63b78d.chunk.css",
     "main.js": "/chip8/static/js/main.77e65b68.chunk.js",
     "main.js.map": "/chip8/static/js/main.77e65b68.chunk.js.map",
     "runtime~main.js": "/chip8/static/js/runtime~main.7b09a22b.js",
@@ -8,8 +8,8 @@
     "static/js/2.d6a534e5.chunk.js": "/chip8/static/js/2.d6a534e5.chunk.js",
     "static/js/2.d6a534e5.chunk.js.map": "/chip8/static/js/2.d6a534e5.chunk.js.map",
     "index.html": "/chip8/index.html",
-    "precache-manifest.6cbd579829f148de15f71eb34170d73c.js": "/chip8/precache-manifest.6cbd579829f148de15f71eb34170d73c.js",
+    "precache-manifest.0cace6ef98ec843e61f53aa8d8488f42.js": "/chip8/precache-manifest.0cace6ef98ec843e61f53aa8d8488f42.js",
     "service-worker.js": "/chip8/service-worker.js",
-    "static/css/main.07a433f7.chunk.css.map": "/chip8/static/css/main.07a433f7.chunk.css.map"
+    "static/css/main.5d63b78d.chunk.css.map": "/chip8/static/css/main.5d63b78d.chunk.css.map"
   }
 }
