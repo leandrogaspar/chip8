@@ -4,6 +4,7 @@ import './App.css';
 import Chip8 from "../../interpreter/chip8";
 import Screen from "../Screen";
 import VRegisters from "../VRegisters";
+import Stack from "../Stack";
 
 // 1	2	3	C
 // 4	5	6	D
@@ -21,7 +22,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       displayData: new Array(0).fill(0),
-      v: new Uint8Array(16)
+      v: new Uint8Array(16),
+      stack: new Uint16Array(16),
     };
     this.myRef = React.createRef();
     this.intervalHandle = null;
@@ -71,8 +73,9 @@ class App extends React.Component {
       } while (remainingCycles > 0);
 
       this.setState({
-        displayData: this.chip8.display,
-        v: this.chip8.V.slice(0)
+        displayData: this.chip8.display.slice(),
+        v: this.chip8.V.slice(),
+        stack: this.chip8.stack.slice(),
       });
 
       this.chip8.soundTimerTick();
@@ -83,10 +86,16 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <input type="file" id="file" onChange={this.handleFile} />
+        <input className="SelectRom" type="file" id="file" onChange={this.handleFile} />
         <button id="start" onClick={this.handleStart}>Start!</button>
-        <VRegisters v={this.state.v}></VRegisters>
-        <Screen displayData={this.state.displayData}></Screen>
+        <section className="MemoryView">
+          <VRegisters v={this.state.v}></VRegisters>
+          <Stack stack={this.state.stack}></Stack>
+          
+        </section>
+        <section className="DisplayView">
+          <Screen displayData={this.state.displayData}></Screen>
+        </section>
       </div>);
   }
 }
