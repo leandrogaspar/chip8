@@ -4,3 +4,7 @@
     list-style-type: none;
     columns: 2;
 }
+
+#stack > .Register:first-of-type {
+    display: inline-flex;
+}

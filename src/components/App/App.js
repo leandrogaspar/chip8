@@ -27,6 +27,7 @@ class App extends React.Component {
       stack: new Uint16Array(16),
       pc: 0x200,
       memorySlice: new Uint8Array(7),
+      sp: 0,
     };
     this.myRef = React.createRef();
     this.intervalHandle = null;
@@ -81,6 +82,7 @@ class App extends React.Component {
         stack: this.chip8.stack,
         pc: this.chip8.PC,
         memorySlice: this.memorySlice(this.chip8.PC, this.chip8.memory),
+        sp: this.chip8.SP,
       });
 
       this.chip8.soundTimerTick();
@@ -99,7 +101,7 @@ class App extends React.Component {
         <button id="start" onClick={this.handleStart}>Start!</button>
         <section className="MemoryView">
           <VRegisters v={this.state.v}></VRegisters>
-          <Stack stack={this.state.stack}></Stack>
+          <Stack stack={this.state.stack} sp={this.state.sp}></Stack>
           <Memory memorySlice={this.state.memorySlice} pc={this.state.pc}></Memory>
         </section>
         <section className="DisplayView">
