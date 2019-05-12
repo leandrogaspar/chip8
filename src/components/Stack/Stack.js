@@ -9,9 +9,12 @@ class Stack extends React.Component {
             return (<Register key={index.toString()} label={`SP${index.toString(16).toUpperCase()}`} value={number} bytes={2}></Register>);
         });
         return (
-            <ul className="Stack">
-                {items}
-            </ul>
+            <section>
+                <h1>Stack</h1>
+                <ul className="StackList">
+                    {items}
+                </ul>
+            </section>
         );
     }
 }

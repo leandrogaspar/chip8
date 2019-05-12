@@ -24,11 +24,17 @@ class Register extends React.Component {
     render() {
         return (
             <li className="Register">
-                <label className="Label">{this.props.label}</label>
+                {this.getLabel()}
                 <span className="OldValue">{this.numberToHex(this.state.oldValue)}</span>
                 <span className="CurrentValue">{this.numberToHex(this.state.currentValue)}</span>
             </li>
         );
+    }
+
+    getLabel() {
+        if (this.props.label) {
+            return (<label className="Label">{this.props.label}</label>);
+        }
     }
 
     numberToHex(number) {
