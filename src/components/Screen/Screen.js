@@ -41,6 +41,8 @@ class Screen extends React.Component {
             if (displayData[i] !== 0) {
                 const scaledX = x * pixelSize,
                     scaledY = y * pixelSize;
+                this.ctx.shadowBlur =  Math.random() * 30;
+                this.ctx.shadowColor = `rgba(102, 255, 102, ${Math.random() * 0.3})`;
                 this.ctx.fillRect(scaledX, scaledY, pixelSize, pixelSize);
             }
         }

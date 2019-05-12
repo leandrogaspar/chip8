@@ -73,9 +73,9 @@ class App extends React.Component {
       } while (remainingCycles > 0);
 
       this.setState({
-        displayData: this.chip8.display.slice(),
-        v: this.chip8.V.slice(),
-        stack: this.chip8.stack.slice(),
+        displayData: this.chip8.display,
+        v: this.chip8.V,
+        stack: this.chip8.stack,
       });
 
       this.chip8.soundTimerTick();
