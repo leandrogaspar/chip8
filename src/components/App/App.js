@@ -5,6 +5,7 @@ import Chip8 from "../../interpreter/chip8";
 import Screen from "../Screen";
 import VRegisters from "../VRegisters";
 import Stack from "../Stack";
+import Memory from "../Memory";
 
 // 1	2	3	C
 // 4	5	6	D
@@ -24,6 +25,8 @@ class App extends React.Component {
       displayData: new Array(0).fill(0),
       v: new Uint8Array(16),
       stack: new Uint16Array(16),
+      pc: 0x200,
+      memorySlice: new Uint8Array(7),
     };
     this.myRef = React.createRef();
     this.intervalHandle = null;
@@ -76,11 +79,17 @@ class App extends React.Component {
         displayData: this.chip8.display,
         v: this.chip8.V,
         stack: this.chip8.stack,
+        pc: this.chip8.PC,
+        memorySlice: this.memorySlice(this.chip8.PC, this.chip8.memory),
       });
 
       this.chip8.soundTimerTick();
       this.chip8.delayTimerTick();
     }, frequency);
+  }
+
+  memorySlice(pc, memory) {
+    return memory.slice(pc, pc + 7);
   }
 
   render() {
@@ -91,7 +100,7 @@ class App extends React.Component {
         <section className="MemoryView">
           <VRegisters v={this.state.v}></VRegisters>
           <Stack stack={this.state.stack}></Stack>
-          
+          <Memory memorySlice={this.state.memorySlice} pc={this.state.pc}></Memory>
         </section>
         <section className="DisplayView">
           <Screen displayData={this.state.displayData}></Screen>

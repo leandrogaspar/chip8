@@ -1,5 +1,8 @@
 .Register {
     padding: 0.20rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .OldValue, .Label {
