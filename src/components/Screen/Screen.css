@@ -5,3 +5,7 @@
     align-items: center;
     justify-content: center;
 }
+
+.ScreenCanvas {
+    border: 5px solid rgb(102, 255, 102);
+}

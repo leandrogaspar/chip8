@@ -4,6 +4,7 @@ import Register from "./Register";
 import VRegisters from "./VRegisters";
 import Stack from "./Stack";
 import Memory from "./Memory";
+import OtherRegisters from "./OtherRegisters";
 
 export {
     App,
@@ -12,4 +13,5 @@ export {
     VRegisters,
     Stack,
     Memory,
+    OtherRegisters,
 }

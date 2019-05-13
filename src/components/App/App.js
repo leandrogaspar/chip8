@@ -6,6 +6,7 @@ import Screen from "../Screen";
 import VRegisters from "../VRegisters";
 import Stack from "../Stack";
 import Memory from "../Memory";
+import OtherRegisters from "../OtherRegisters";
 
 // 1	2	3	C
 // 4	5	6	D
@@ -28,6 +29,9 @@ class App extends React.Component {
       pc: 0x200,
       memorySlice: new Uint8Array(7),
       sp: 0,
+      i: 0,
+      dt: 0,
+      st: 0,
     };
     this.myRef = React.createRef();
     this.intervalHandle = null;
@@ -83,6 +87,9 @@ class App extends React.Component {
         pc: this.chip8.PC,
         memorySlice: this.memorySlice(this.chip8.PC, this.chip8.memory),
         sp: this.chip8.SP,
+        i: this.chip8.I,
+        dt: this.chip8.DT,
+        st: this.chip8.ST,
       });
 
       this.chip8.soundTimerTick();
@@ -99,13 +106,14 @@ class App extends React.Component {
       <div className="App">
         <input className="SelectRom" type="file" id="file" onChange={this.handleFile} />
         <button id="start" onClick={this.handleStart}>Start!</button>
+        <section className="DisplayView">
+          <Screen displayData={this.state.displayData}></Screen>
+        </section>
         <section className="MemoryView">
+          <OtherRegisters i={this.state.i} dt={this.state.dt} st={this.state.st}></OtherRegisters>
           <VRegisters v={this.state.v}></VRegisters>
           <Stack stack={this.state.stack} sp={this.state.sp}></Stack>
           <Memory memorySlice={this.state.memorySlice} pc={this.state.pc}></Memory>
-        </section>
-        <section className="DisplayView">
-          <Screen displayData={this.state.displayData}></Screen>
         </section>
       </div>);
   }

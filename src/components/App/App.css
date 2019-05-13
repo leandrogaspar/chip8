@@ -30,6 +30,8 @@ html, body {
   justify-content: space-evenly;
   align-items: flex-end;
   flex-wrap: wrap;
+  padding: 1rem;
+  border: 5px solid rgb(102, 255, 102);
 }
 
 .DisplayView {
