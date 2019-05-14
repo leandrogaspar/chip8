@@ -7,6 +7,7 @@ import VRegisters from "../VRegisters";
 import Stack from "../Stack";
 import Memory from "../Memory";
 import OtherRegisters from "../OtherRegisters";
+import Button from "../Button";
 
 // 1	2	3	C
 // 4	5	6	D
@@ -55,7 +56,7 @@ class App extends React.Component {
     reader.readAsArrayBuffer(file);
   }
 
-  handleStart = (e) => {
+  onStart = (e) => {
     e.preventDefault();
 
     if (this.intervalHandle) {
@@ -104,8 +105,11 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <input className="SelectRom" type="file" id="file" onChange={this.handleFile} />
-        <button id="start" onClick={this.handleStart}>Start!</button>
+        <header>
+          <h1>Chip-8</h1>
+          <Button onClick={this.onStart}>Start</Button>
+          <input className="SelectRom" type="file" id="file" onChange={this.handleFile} />
+        </header>
         <section className="DisplayView">
           <Screen displayData={this.state.displayData}></Screen>
         </section>

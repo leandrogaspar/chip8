@@ -1,0 +1,17 @@
+.Button {
+    padding: 0.5rem;
+    margin: 0.5rem;
+    display: inline-block;
+    color: rgba(102, 255, 102);
+    border: 5px solid rgb(102, 255, 102);
+}
+
+.Button:hover {
+    cursor: pointer;
+    color: rgba(102, 255, 102, 0.8);
+    border: 5px solid rgba(102, 255, 102, 0.8);
+}
+
+.Button:active {
+    text-decoration: underline;
+}
