@@ -5,6 +5,12 @@
     columns: 2;
 }
 
+@media only screen and (max-width : 480px) {
+    .StackList {
+        columns: 1;
+    }
+}
+
 #stack > .Register:first-of-type {
     display: inline-flex;
 }
