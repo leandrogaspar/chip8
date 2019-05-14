@@ -46,6 +46,23 @@ html, body {
   border: 5px solid rgb(102, 255, 102);
 }
 
+.MemoryView::-webkit-scrollbar {
+  width: 12px;
+  background-color: none;
+} 
+
+.MemoryView::-webkit-scrollbar-track {
+  background: none; 
+}
+
+.MemoryView::-webkit-scrollbar-thumb {
+  background: rgb(102, 255, 102); 
+}
+
+.MemoryView::-webkit-scrollbar-thumb:hover {
+  background: rgba(102, 255, 102, 0.8);
+}
+
 /* http://aleclownes.com/2017/02/01/crt-display.html */
 @keyframes flicker {
   0% {
