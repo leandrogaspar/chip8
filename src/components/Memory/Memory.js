@@ -9,7 +9,7 @@ class Memory extends React.Component {
             return (<Register key={index.toString()} label={this.getIndexLabel(index)} value={number} bytes={1}></Register>);
         });
         return (
-            <section>
+            <section className="Memory">
                 <h1>Memory</h1>
                 <ul className="MemoryList">
                     <Register label="PC " value={this.props.pc} bytes={2}></Register>

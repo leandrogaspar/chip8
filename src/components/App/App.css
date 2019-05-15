@@ -42,6 +42,7 @@ html, body {
 
 .MemoryView {
   margin: var(--default-margin);
+  padding: var(--default-margin);
   max-height: 40vh;
   overflow-y: auto;
   overflow-x: hidden;

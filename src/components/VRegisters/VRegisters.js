@@ -9,7 +9,7 @@ class VRegisters extends React.Component {
             return (<Register key={index.toString()} label={`V${index.toString(16).toUpperCase()}`} value={number}></Register>);
         });
         return (
-            <section>
+            <section className="VRegisters">
                 <h1>V Registers</h1>
                 <ul className="RegistersList">
                     {items}
