@@ -105,14 +105,14 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <header>
+        <header className="Header">
           <h1>Chip-8</h1>
           <Button onClick={this.onStart}>Start</Button>
           <input className="SelectRom" type="file" id="file" onChange={this.handleFile} />
         </header>
-        <section className="DisplayView">
+        <main className="DisplayView">
           <Screen displayData={this.state.displayData}></Screen>
-        </section>
+        </main>
         <section className="MemoryView">
           <OtherRegisters i={this.state.i} dt={this.state.dt} st={this.state.st}></OtherRegisters>
           <VRegisters v={this.state.v}></VRegisters>

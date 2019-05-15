@@ -27,13 +27,19 @@ class Screen extends React.Component {
      * Draw the display data on the Canvas element
      */
     draw() {
+        const computedStyle = getComputedStyle(document.documentElement);
+        this.drawColor = computedStyle.getPropertyValue('--main-color');
+        this.shadowColor = `rgba(${computedStyle.getPropertyValue('--main-color-rgb')}, ${Math.random() * 0.4})`;
+        this.backgroundColor = computedStyle.getPropertyValue('--main-bg-color');
+        this.shadowBlur = Math.random() * 20;
+
         // Clear the screen
-        this.ctx.fillStyle = this.rgbFromColor(this.props.backgroundColor);
+        this.ctx.fillStyle = this.backgroundColor;
         this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 
         const pixelSize = this.canvasHeight / 32;
 
-        this.ctx.fillStyle = this.rgbFromColor(this.props.drawColor);
+        this.ctx.fillStyle = this.drawColor;
         const displayData = this.props.displayData;
         for (let i = 0; i < displayData.length; i++) {
             const y = Math.floor(i / 64);
@@ -41,26 +47,12 @@ class Screen extends React.Component {
             if (displayData[i] !== 0) {
                 const scaledX = x * pixelSize,
                     scaledY = y * pixelSize;
-                this.ctx.shadowBlur =  Math.random() * 30;
-                this.ctx.shadowColor = `rgba(102, 255, 102, ${Math.random() * 0.3})`;
+                this.ctx.shadowBlur =  this.shadowBlur;
+                this.ctx.shadowColor = this.shadowColor;
                 this.ctx.fillRect(scaledX, scaledY, pixelSize, pixelSize);
             }
         }
         this.requestFrameId = window.requestAnimationFrame(this.draw.bind(this));
-    }
-
-    /**
-     * @typedef {object} Color
-     * @property {number} r - Red
-     * @property {number} g - Green
-     * @property {number} b - Blue
-     */
-    /**
-     * Transform a Color Object to the rgb color string
-     * @property {Color} color - Color object
-     */
-    rgbFromColor(color) {
-        return `rgb(${color.r},${color.g},${color.b})`;
     }
 
     componentDidMount() {
@@ -83,16 +75,14 @@ class Screen extends React.Component {
 
     render() {
         return (
-            <section ref={this.containerRef} className="ScreenContainer">
+            <div ref={this.containerRef} className="ScreenContainer">
                 <canvas ref={this.canvasRef} className="ScreenCanvas"></canvas>
-            </section>
+            </div>
         );
     }
 }
 
 Screen.defaultProps = {
-    backgroundColor: { r: 40, g: 40, b: 40 },
-    drawColor: { r: 102, g: 255, b: 102 },
     displayData: new Array(64 * 32).fill(0)
 }
 

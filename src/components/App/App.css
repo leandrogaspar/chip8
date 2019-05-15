@@ -1,30 +1,47 @@
+:root {
+  --main-color-rgb: 102, 255, 102;
+  --main-color: rgb(var(--main-color-rgb));
+  --main-color-hover: rgba(var(--main-color-rgb), 0.8);
+  --main-bg-color: rgb(40, 40, 40);
+
+  --main-color-border: 5px solid var(--main-color);
+  --main-color-hover-border: 5px solid var(--main-color-hover);
+
+  --default-margin: 0.5rem;
+
+  --font-stack: 'Press Start 2P', sans-serif;
+}
+
 html, body {
-  min-height: 100vh;
   width: 100%;
-  background-color: rgb(40, 40, 40);
-  color: rgb(102, 255, 102);
-  font-family: 'Press Start 2P', cursive;
+  min-height: 100vh;
+
+  font-family: var(--font-stack);
+  color: var(--main-color);
+  background-color: var(--main-bg-color);
 }
 
 .App {
-  text-align: center;
   min-height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
 }
 
+.Header {
+  text-align: center;
+}
+
 .DisplayView {
-  margin: 0.5rem;
+  margin: var(--default-margin);
   flex: 1;
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 .MemoryView {
-  margin: 0.5rem;
+  margin: var(--default-margin);
   max-height: 40vh;
   overflow-y: auto;
   overflow-x: hidden;
@@ -33,7 +50,7 @@ html, body {
   justify-content: space-evenly;
   align-items: flex-start;
   flex-wrap: wrap;
-  border: 5px solid rgb(102, 255, 102);
+  border: var(--main-color-border);
 }
 
 .MemoryView::-webkit-scrollbar {
@@ -46,11 +63,11 @@ html, body {
 }
 
 .MemoryView::-webkit-scrollbar-thumb {
-  background: rgb(102, 255, 102); 
+  background: var(--main-color); 
 }
 
 .MemoryView::-webkit-scrollbar-thumb:hover {
-  background: rgba(102, 255, 102, 0.8);
+  background: var(--main-color-hover); 
 }
 
 /* http://aleclownes.com/2017/02/01/crt-display.html */
