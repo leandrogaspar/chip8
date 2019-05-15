@@ -14,7 +14,8 @@
 
 html, body {
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
+
 
   font-family: var(--font-stack);
   color: var(--main-color);
@@ -22,22 +23,24 @@ html, body {
 }
 
 .App {
-  min-height: 100vh;
+  max-height: 100vh;
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
 }
 
 .Header {
+  flex: 0;
   text-align: center;
+  margin: var(--default-margin);
 }
 
 .DisplayView {
   margin: var(--default-margin);
+  border: var(--main-color-border);
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  overflow: hidden;
 }
 
 .MemoryView {
