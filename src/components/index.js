@@ -1,6 +1,6 @@
 import App from "./App";
 import Screen from "./App";
-import Register from "./Register";
+import Word from "./Word";
 import VRegisters from "./VRegisters";
 import Stack from "./Stack";
 import Memory from "./Memory";
@@ -10,7 +10,7 @@ import Button from "./Button";
 export {
     App,
     Screen,
-    Register,
+    Word,
     VRegisters,
     Stack,
     Memory,
