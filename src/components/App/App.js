@@ -7,7 +7,7 @@ import VRegisters from "../VRegisters";
 import Stack from "../Stack";
 import Memory from "../Memory";
 import OtherRegisters from "../OtherRegisters";
-import Button from "../Button";
+import SelectROM from "../SelectROM";
 
 // 1	2	3	C
 // 4	5	6	D
@@ -37,28 +37,10 @@ class App extends React.Component {
     this.myRef = React.createRef();
     this.intervalHandle = null;
     this.cyclesPerTick = 10;
-    this.rom = [];
     this.chip8 = new Chip8();
   }
 
-  handleFile = (evt) => {
-    evt.preventDefault();
-
-    const file = evt.target.files[0];
-
-    const reader = new FileReader();
-
-    reader.onload = (event) => {
-      const arrayBufferNew = event.target.result;
-      this.rom = new Uint8Array(arrayBufferNew);
-    };
-
-    reader.readAsArrayBuffer(file);
-  }
-
-  onStart = (e) => {
-    e.preventDefault();
-
+  onPlay = (rom) => {
     if (this.intervalHandle) {
       clearInterval(this.intervalHandle);
     }
@@ -66,8 +48,7 @@ class App extends React.Component {
     this.chip8.reset();
     // Load the ROM
     let addr = 0x200;
-    console.log(`Rom size ${this.rom.length}`);
-    this.rom.forEach((byte) => {
+    rom.forEach((byte) => {
       this.chip8.writeByte(addr, byte);
       addr++;
     });
@@ -107,8 +88,7 @@ class App extends React.Component {
       <div className="App">
         <header className="Header">
           <h1>Chip-8</h1>
-          <Button onClick={this.onStart}>Start</Button>
-          <input className="SelectRom" type="file" id="file" onChange={this.handleFile} />
+          <SelectROM onPlay={this.onPlay}></SelectROM>
         </header>
         <main className="DisplayView">
           <Screen displayData={this.state.displayData}></Screen>

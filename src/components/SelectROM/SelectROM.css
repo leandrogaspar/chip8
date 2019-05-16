@@ -1,0 +1,16 @@
+.SelectROMInput {
+    display: none;
+}
+
+.RomFileName {
+    overflow: hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    max-width: 250px;
+    display:inline-block;
+}
+
+.RomFileName:hover {
+    cursor: pointer;
+    color: var(--main-color-hover);
+}
