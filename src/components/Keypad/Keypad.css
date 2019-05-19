@@ -1,0 +1,12 @@
+.Keypad {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    grid-template-rows: repeat(4, auto);
+
+    grid-column-gap: 1rem;
+    grid-row-gap: 1rem;
+}
+
+.PressedKey {
+    color: var(--main-color-hover);
+}

@@ -8,17 +8,7 @@ import Stack from "../Stack";
 import Memory from "../Memory";
 import OtherRegisters from "../OtherRegisters";
 import SelectROM from "../SelectROM";
-
-// 1	2	3	C
-// 4	5	6	D
-// 7	8	9	E
-// A	0	B	F
-// const keyCodeMap = {
-//   'Digit1': 0x1, 'Digit2': 0x2, 'Digit3': 0x3, 'Digit4': 0xC,
-//   'KeyQ': 0x4, 'KeyW': 0x5, 'KeyE': 0x6, 'KeyR': 0xD,
-//   'KeyA': 0x7, 'KeyS': 0x8, 'KeyD': 0x9, 'KeyF': 0xE,
-//   'KeyZ': 0xA, 'KeyX': 0x0, 'KeyC': 0xB, 'KeyV': 0xF,
-// };
+import Keypad from "../Keypad";
 
 class App extends React.Component {
   constructor(props) {
@@ -136,6 +126,14 @@ class App extends React.Component {
     return memory.slice(pc, pc + 7);
   }
 
+  onKeydown = (key) => {
+    this.chip8.pressKey(key);
+  }
+
+  onKeyup = (key) => {
+    this.chip8.releaseKey(key);
+  }
+
   render() {
     return (
       <div className="App">
@@ -147,6 +145,7 @@ class App extends React.Component {
           <Screen displayData={this.state.displayData}></Screen>
         </main>
         <section className="MemoryView">
+          <Keypad onKeydown={this.onKeydown} onKeyup={this.onKeyup}></Keypad>
           <OtherRegisters otherRegisters={this.state.otherRegisters}></OtherRegisters>
           <VRegisters V={this.state.V}></VRegisters>
           <Stack stack={this.state.stack}></Stack>
