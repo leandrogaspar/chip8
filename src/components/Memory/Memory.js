@@ -3,20 +3,23 @@ import Word from '../Word';
 import './Memory.css';
 import { numberToPaddedHex } from "../util";
 
-const Memory = (props) => {
-    const { old, current } = props.memory;
+const Memory = ({ old, current }) => {
     return (
         <section className="Memory">
-            <h1>Memory</h1>
-            <ul className="MemoryList">
-                <Word label="PC " oldValue={old.PC} currentValue={current.PC} bytes={2}></Word>
+            <h1 data-testid="title">Memory</h1>
+            <ul className="MemoryList" data-testid="memory-list">
+                <Word label="PC " old={old.PC} current={current.PC} bytes={2}></Word>
                 {Array.from(current.memorySlice).map((currentMemory, index) => {
-                    const oldMemory = old.memorySlice[index];
-                    return (<Word key={index} label={numberToPaddedHex(index + current.PC, 2)} oldValue={oldMemory} currentValue={currentMemory}></Word>);
+                    return (<Word key={index} label={numberToPaddedHex(index + current.PC, 2)} current={currentMemory}></Word>);
                 })}
             </ul>
         </section>
     );
+}
+
+Memory.defaultProps = {
+    old: { PC: 0, memorySlice: [] },
+    current: { PC: 0, memorySlice: [] },
 }
 
 export default Memory;

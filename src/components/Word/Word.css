@@ -5,6 +5,6 @@
     justify-content: space-between;
 }
 
-.OldValue, .Label {
+.Old, .Label {
     margin-right: 0.3rem;
 }

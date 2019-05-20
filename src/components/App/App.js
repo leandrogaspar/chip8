@@ -135,6 +135,11 @@ class App extends React.Component {
   }
 
   render() {
+    const otherRegisters = this.state.otherRegisters;
+    const V = this.state.V;
+    const stack = this.state.stack;
+    const memory = this.state.memory;
+    
     return (
       <div className="App">
         <header className="Header">
@@ -146,10 +151,10 @@ class App extends React.Component {
         </main>
         <section className="MemoryView">
           <Keypad onKeydown={this.onKeydown} onKeyup={this.onKeyup}></Keypad>
-          <OtherRegisters otherRegisters={this.state.otherRegisters}></OtherRegisters>
-          <VRegisters V={this.state.V}></VRegisters>
-          <Stack stack={this.state.stack}></Stack>
-          <Memory memory={this.state.memory}></Memory>
+          <OtherRegisters old={otherRegisters.old} current={otherRegisters.current}></OtherRegisters>
+          <VRegisters old={V.old} current={V.current}></VRegisters>
+          <Stack old={stack.old} current={stack.current}></Stack>
+          <Memory old={memory.old} current={memory.current}></Memory>
         </section>
       </div>);
   }

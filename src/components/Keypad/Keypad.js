@@ -20,12 +20,7 @@ const keys = [
 ];
 
 const Keypad = (props) => {
-    const [pressedKeys, setPressedKeys] = useState({
-        0x1:false, 0x2:false, 0x3:false ,0xC:false,
-        0x4:false, 0x5:false, 0x6:false, 0xD:false,
-        0x7:false, 0x8:false, 0x9:false, 0xE:false,
-        0xA:false, 0x0:false, 0xB:false, 0xF:false,
-    });
+    const [pressedKeys, setPressedKeys] = useState({});
 
     const setKeyState = (key, pressed) => {
         const keyFromEvent = keyMap[key];
@@ -57,7 +52,7 @@ const Keypad = (props) => {
         <section>
             <h1>Keypad</h1>
             <span className="Keypad">
-                {keys.map(key => <div key={key} className={"Key " + (pressedKeys[key] === true ? "PressedKey": "")}>{key.toString(16).toUpperCase()}</div>)}
+                {keys.map(key => <div key={key} className={"Key " + (pressedKeys[key] === true ? "PressedKey" : "")}>{key.toString(16).toUpperCase()}</div>)}
             </span>
         </section>);
 }
