@@ -4,14 +4,12 @@
     display: inline-block;
     color: var(--main-color);
     border: var(--main-color-border);
+    user-select: none;
 }
 
 .Button:hover, .Button:focus {
     color: var(--main-color-hover);
     border: var(--main-color-hover-border);
-}
-
-.Button:hover {
     cursor: pointer;
 }
 
@@ -21,4 +19,5 @@
 
 .Button:active {
     text-decoration: underline;
+    cursor: pointer;
 }
