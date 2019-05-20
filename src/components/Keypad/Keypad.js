@@ -49,11 +49,11 @@ const Keypad = (props) => {
     })
 
     return (
-        <section>
+        <section className="Keypad">
             <h1>Keypad</h1>
-            <span className="Keypad">
+            <div className="Keys">
                 {keys.map(key => <div key={key} className={"Key " + (pressedKeys[key] === true ? "PressedKey" : "")}>{key.toString(16).toUpperCase()}</div>)}
-            </span>
+            </div>
         </section>);
 }
 
