@@ -14,6 +14,9 @@ class SelectROM extends React.Component {
     }
 
     onPlayClick = () => {
+        this.setState({
+            playing: true
+        });
         this.props.onPlay(this.state.rom);
     }
 
