@@ -1,3 +1,3 @@
-import SelectROM from "./SelectROM";
+import SelectROM from './SelectROM';
 
 export default SelectROM;

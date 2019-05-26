@@ -1,3 +1,3 @@
-import Keypad from "./Keypad";
+import Keypad from './Keypad';
 
 export default Keypad;

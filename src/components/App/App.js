@@ -1,15 +1,15 @@
 import React from 'react';
 import './App.css';
 
-import Chip8 from "../../interpreter/chip8";
-import Screen from "../Screen";
-import VRegisters from "../VRegisters";
-import Stack from "../Stack";
-import Memory from "../Memory";
-import OtherRegisters from "../OtherRegisters";
-import SelectROM from "../SelectROM";
-import Keypad from "../Keypad";
-import Button from "../Button";
+import Chip8 from '../../interpreter/chip8';
+import Screen from '../Screen';
+import VRegisters from '../VRegisters';
+import Stack from '../Stack';
+import Memory from '../Memory';
+import OtherRegisters from '../OtherRegisters';
+import SelectROM from '../SelectROM';
+import Keypad from '../Keypad';
+import Button from '../Button';
 
 class App extends React.Component {
   constructor(props) {
@@ -28,11 +28,11 @@ class App extends React.Component {
       },
       stack: {
         old: { SP: 0, stack: new Uint16Array(16) },
-        current: { SP: 0, stack: new Uint16Array(16), }
+        current: { SP: 0, stack: new Uint16Array(16) }
       },
       memory: {
         old: { PC: 0x200, memorySlice: new Uint8Array(7) },
-        current: { PC: 0x200, memorySlice: new Uint8Array(7), }
+        current: { PC: 0x200, memorySlice: new Uint8Array(7) }
       }
     };
     this.myRef = React.createRef();
@@ -53,19 +53,19 @@ class App extends React.Component {
     this.intervalHandle = setInterval(this.cycle, frequency);
   }
 
-  onPlay = (rom) => {
+  onPlay = rom => {
     this.stopClock();
 
     this.chip8.reset();
     // Load the ROM
     let addr = 0x200;
-    rom.forEach((byte) => {
+    rom.forEach(byte => {
       this.chip8.writeByte(addr, byte);
       addr++;
     });
 
     this.startClock();
-  }
+  };
 
   cycle = () => {
     let remainingCycles = this.cyclesPerTick;
@@ -85,7 +85,7 @@ class App extends React.Component {
     this.chip8.delayTimerTick();
 
     this.updateChip8State();
-  }
+  };
 
   updateChip8State(onBreakpoint) {
     setTimeout(() => {
@@ -96,14 +96,17 @@ class App extends React.Component {
           old: this.state.otherRegisters.current,
           current: { I: this.chip8.I, DT: this.chip8.DT, ST: this.chip8.ST }
         },
-        V: { old: this.state.V.current, current: this.chip8.V, },
+        V: { old: this.state.V.current, current: this.chip8.V },
         stack: {
           old: this.state.stack.current,
           current: { SP: this.chip8.SP, stack: this.chip8.stack }
         },
         memory: {
           old: this.state.memory.current,
-          current: { PC: this.chip8.PC, memorySlice: this.memorySlice(this.chip8.PC, this.chip8.memory) }
+          current: {
+            PC: this.chip8.PC,
+            memorySlice: this.memorySlice(this.chip8.PC, this.chip8.memory)
+          }
         }
       });
     }, 0);
@@ -113,28 +116,28 @@ class App extends React.Component {
     return memory.slice(pc, pc + 7);
   }
 
-  onKeydown = (key) => {
+  onKeydown = key => {
     this.chip8.pressKey(key);
-  }
+  };
 
-  onKeyup = (key) => {
+  onKeyup = key => {
     this.chip8.releaseKey(key);
-  }
+  };
 
   onContinue = () => {
     this.startClock();
-  }
+  };
 
   onStep = () => {
     this.chip8.cycle();
     this.chip8.soundTimerTick();
     this.chip8.delayTimerTick();
     this.updateChip8State(true);
-  }
+  };
 
-  onBreakpointChange = (evt) => {
+  onBreakpointChange = evt => {
     this.setState({ breakpoint: evt.target.value });
-  }
+  };
 
   renderControls() {
     if (this.state.breakpointHit) {
@@ -143,9 +146,9 @@ class App extends React.Component {
           <Button onClick={this.onContinue}>Continue</Button>
           <Button onClick={this.onStep}>Step</Button>
         </div>
-        );
+      );
     } else {
-      return <SelectROM onPlay={this.onPlay}></SelectROM>;
+      return <SelectROM onPlay={this.onPlay} />;
     }
   }
 
@@ -162,20 +165,32 @@ class App extends React.Component {
           {this.renderControls()}
         </header>
         <main className="DisplayView">
-          <Screen displayData={this.state.displayData}></Screen>
+          <Screen displayData={this.state.displayData} />
         </main>
         <footer className="MemoryView">
           <div className="Breakpoint">
-            <label className="BreakpointLabel" htmlFor="breakpoint">Breakpoint</label>
-            <input type="text" onChange={this.onBreakpointChange} value={this.state.breakpoint} className="BreakpointInput" id="breakpoint"/>
+            <label className="BreakpointLabel" htmlFor="breakpoint">
+              Breakpoint
+            </label>
+            <input
+              type="text"
+              onChange={this.onBreakpointChange}
+              value={this.state.breakpoint}
+              className="BreakpointInput"
+              id="breakpoint"
+            />
           </div>
-          <Keypad onKeydown={this.onKeydown} onKeyup={this.onKeyup}></Keypad>
-          <OtherRegisters old={otherRegisters.old} current={otherRegisters.current}></OtherRegisters>
-          <VRegisters old={V.old} current={V.current}></VRegisters>
-          <Stack old={stack.old} current={stack.current}></Stack>
-          <Memory old={memory.old} current={memory.current}></Memory>
+          <Keypad onKeydown={this.onKeydown} onKeyup={this.onKeyup} />
+          <OtherRegisters
+            old={otherRegisters.old}
+            current={otherRegisters.current}
+          />
+          <VRegisters old={V.old} current={V.current} />
+          <Stack old={stack.old} current={stack.current} />
+          <Memory old={memory.old} current={memory.current} />
         </footer>
-      </div>);
+      </div>
+    );
   }
 }
 

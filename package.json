@@ -12,10 +12,19 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test-coverage": "react-scripts --coverage",
+    "eject": "react-scripts eject",
+    "prettier": "prettier --write \"**/*.js\""
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "globals": {
+      "createChip8": "readonly",
+      "createMockChip8": "readonly",
+      "chip8Snapshot": "readonly",
+      "isChip8Equal": "readonly",
+      "writeWord": "readonly"
+    }
   },
   "browserslist": {
     "production": [
@@ -30,6 +39,21 @@
     ]
   },
   "devDependencies": {
+    "husky": "^2.3.0",
+    "lint-staged": "^8.1.7",
+    "prettier": "^1.17.1",
     "react-testing-library": "^7.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run test-coverage"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --single-quote --write",
+      "git add"
+    ]
   }
 }
