@@ -12,7 +12,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test-coverage": "react-scripts --coverage",
+    "test-nowatch": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject",
     "prettier": "prettier --write \"**/*.js\""
   },
@@ -47,7 +47,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "npm run test-coverage"
+      "pre-push": "npm run test-nowatch"
     }
   },
   "lint-staged": {
