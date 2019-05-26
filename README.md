@@ -20,12 +20,14 @@ The page will reload if you make edits.<br>
 
 Launches the test runner in the interactive watch mode.<br>
 
-Tests are compares the Chip-8 state after an instruction against an expected state. This approach was chosen because we want to be sure that an instruction only alter the involved properties. For instance, a instruction that perform a jump should only change the PC - any other change would be a bug.
+Each test compares the Chip-8 state after an instruction against an expected state. This approach was chosen because we want to be sure that an instruction only alter the involved properties.<br>
+For instance, a instruction that perform a jump should only change the PC - any other change would be a bug.
 
 A typical test looks like this:
 
 ```code
 ...
+
 chip8 = createChip8(); // Create a chip-8 instance
 writeWord(chip8, 0x200, 0x1EEE); // Load an instruction
 const snapshot = chip8Snapshot(chip8); // Create a copy of the current state
@@ -42,6 +44,7 @@ chip8.cycle();
 // the test would fail warning that the register doesn't match
 const equals = isChip8Equal(chip8, snapshot);
 expect(equals).toBe(true);
+
 ...
 ```
 
