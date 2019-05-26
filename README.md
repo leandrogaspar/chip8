@@ -20,7 +20,7 @@ The page will reload if you make edits.<br>
 
 Launches the test runner in the interactive watch mode.<br>
 
-Tests are made by comparing each register and property of the Chip-8 after an instruction against an expected state. This approach was chosen beacause we want to be sure that an instruction only alter the involved properties. For instance, a instruction that perform a jump should only change the PC - any other change would be a bug.
+Tests are compares the Chip-8 state after an instruction against an expected state. This approach was chosen because we want to be sure that an instruction only alter the involved properties. For instance, a instruction that perform a jump should only change the PC - any other change would be a bug.
 
 A typical test looks like this:
 
@@ -30,8 +30,7 @@ chip8 = createChip8(); // Create a chip-8 instance
 writeWord(chip8, 0x200, 0x1EEE); // Load an instruction
 const snapshot = chip8Snapshot(chip8); // Create a copy of the current state
 
-// Change the copy to reflect our expected
-// state for the instruction
+// Change the copy to reflect our expected state for the instruction
 snapshot.PC = 0xEEE;
 
 // Perform the instruction
