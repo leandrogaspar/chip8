@@ -3,28 +3,24 @@
 # Chip-8
 > A Chip-8 interpreter for the browser!
 
+[Chip8 Screenshot](doc/chip8.png)
+
 [Play with it!](https://leandrogaspar.github.io/chip8/)
 
+## Development
 
-## Running locally
+### `npm start`
 
-You can start a local development server using the "start" script. The interpreter will be available at http://localhost:8080
+Runs the app in the development mode.<br>
+The interpreter will be available at [http://localhost:3000](http://localhost:3000).
 
-```shell
->npm start
-```
+The page will reload if you make edits.<br>
 
-## Tests
+### `npm test`
 
-Tests are made by comparing each register and property of the Chip-8 after an instruction against an expected state. This approach was chosen beacause we want to be sure that an instruction only alter the involved properties. For instance, a instruction that perform a jump should only change the PC.
+Launches the test runner in the interactive watch mode.<br>
 
-You can run either a single test run, or start tests in watch mode:
-
-```shell
->npm test
-
->npm run test-watch
-```
+Tests are made by comparing each register and property of the Chip-8 after an instruction against an expected state. This approach was chosen beacause we want to be sure that an instruction only alter the involved properties. For instance, a instruction that perform a jump should only change the PC - any other change would be a bug.
 
 A typical test looks like this:
 
@@ -50,6 +46,11 @@ expect(equals).toBe(true);
 ...
 ```
 
+### `npm run build`
+
+Builds the app for production to the `build` folder.<br>
+
 ## References
 * [Mastering CHIP-8](http://mattmik.com/files/chip8/mastering/chip8.html) - by Matthew Mikolay
 * [Cowgod's Chip-8 Technical Reference v1.0](http://devernay.free.fr/hacks/chip8/C8TECH10.HTM) - by Thomas P. Greene
+* [Using CSS To Create A CRT](http://aleclownes.com/2017/02/01/crt-display.html) - by Alec Lownes
