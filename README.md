@@ -3,7 +3,7 @@
 # Chip-8
 > A Chip-8 interpreter for the browser!
 
-[Chip8 Screenshot](doc/chip8.png)
+![Chip8 Screenshot](doc/chip8.png)
 
 [Play with it!](https://leandrogaspar.github.io/chip8/)
 
