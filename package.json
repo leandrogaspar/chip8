@@ -14,7 +14,7 @@
     "test": "react-scripts test",
     "test-nowatch": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject",
-    "prettier": "prettier --write \"**/*.js\""
+    "prettier": "prettier --single-quote --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
   },
   "eslintConfig": {
     "extends": "react-app",
