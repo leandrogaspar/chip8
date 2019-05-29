@@ -3,7 +3,7 @@ import './Word.css';
 import { numberToPaddedHex } from '../util';
 
 const Word = props => (
-  <li className="Word">
+  <li className={'Word ' + props.className}>
     <label className="Label" data-testid="label">
       {props.label}
     </label>

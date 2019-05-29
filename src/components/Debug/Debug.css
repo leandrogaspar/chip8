@@ -1,0 +1,42 @@
+.Debug {
+  text-align: center;
+}
+
+.MemoryList {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.Breakpoint {
+  font-family: var(--font-stack);
+  color: var(--main-color);
+}
+
+.BreakpointInput {
+  text-align: center;
+  background: none;
+  outline: none;
+  border: var(--main-color-border);
+  padding: 0.5rem;
+  margin: 0.5rem;
+  width: 80px;
+  font-family: var(--font-stack);
+  color: var(--main-color);
+}
+
+.BreakpointMarker {
+  position: relative;
+}
+
+.BreakpointMarker::before {
+  content: '';
+  text-decoration: underline;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: var(--main-color);
+  position: absolute;
+  left: -17px;
+}

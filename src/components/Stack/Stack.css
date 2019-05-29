@@ -1,20 +1,21 @@
 .Stack {
-    text-align: center;
+  text-align: center;
 }
 
 .StackList {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    columns: 2;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  columns: 2;
 }
 
-@media only screen and (max-width : 480px) {
-    .StackList {
-        columns: 1;
-    }
+@media only screen and (max-width: 480px) {
+  .StackList {
+    columns: 1;
+  }
 }
 
 #stack > .Register:first-of-type {
-    display: inline-flex;
+  display: inline-flex;
 }

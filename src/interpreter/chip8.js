@@ -240,7 +240,7 @@ class Chip8 {
     const x = opCode_x(opCode);
     const nn = opCode_nn(opCode);
 
-    // 5XNN - Store number NN in register VX
+    // 6XNN - Store number NN in register VX
     this.V[x] = nn;
   }
 

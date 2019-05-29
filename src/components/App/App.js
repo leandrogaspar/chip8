@@ -5,7 +5,7 @@ import Chip8 from '../../interpreter/chip8';
 import Screen from '../Screen';
 import VRegisters from '../VRegisters';
 import Stack from '../Stack';
-import Memory from '../Memory';
+import Debug from '../Debug';
 import OtherRegisters from '../OtherRegisters';
 import SelectROM from '../SelectROM';
 import Keypad from '../Keypad';
@@ -15,12 +15,11 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      breakpoint: 0,
       breakpointHit: false,
       displayData: new Array(0).fill(0),
       otherRegisters: {
-        old: { I: 0, DT: 0, ST: 0 },
-        current: { I: 0, DT: 0, ST: 0 }
+        old: { I: 0, DT: 0, ST: 0, PC: 0 },
+        current: { I: 0, DT: 0, ST: 0, PC: 0 }
       },
       V: {
         old: new Uint8Array(16).fill(0),
@@ -30,9 +29,10 @@ class App extends React.Component {
         old: { SP: 0, stack: new Uint16Array(16) },
         current: { SP: 0, stack: new Uint16Array(16) }
       },
-      memory: {
-        old: { PC: 0x200, memorySlice: new Uint8Array(7) },
-        current: { PC: 0x200, memorySlice: new Uint8Array(7) }
+      debug: {
+        breakpoint: 0,
+        old: { PC: 0x200, memorySlice: new Uint8Array(14) },
+        current: { PC: 0x200, memorySlice: new Uint8Array(14) }
       }
     };
     this.myRef = React.createRef();
@@ -72,7 +72,7 @@ class App extends React.Component {
     while (remainingCycles > 0) {
       // When hitting the breakpoint stop
       // the clock and make sure UI state is updated
-      if (this.chip8.PC === Number.parseInt(this.state.breakpoint, 16)) {
+      if (this.chip8.PC === Number.parseInt(this.state.debug.breakpoint, 16)) {
         this.stopClock();
         this.updateChip8State(true);
         return;
@@ -101,8 +101,9 @@ class App extends React.Component {
           old: this.state.stack.current,
           current: { SP: this.chip8.SP, stack: this.chip8.stack }
         },
-        memory: {
-          old: this.state.memory.current,
+        debug: {
+          breakpoint: this.state.debug.breakpoint,
+          old: this.state.debug.current,
           current: {
             PC: this.chip8.PC,
             memorySlice: this.memorySlice(this.chip8.PC, this.chip8.memory)
@@ -113,7 +114,7 @@ class App extends React.Component {
   }
 
   memorySlice(pc, memory) {
-    return memory.slice(pc, pc + 7);
+    return memory.slice(pc, pc + 14);
   }
 
   onKeydown = key => {
@@ -136,7 +137,12 @@ class App extends React.Component {
   };
 
   onBreakpointChange = evt => {
-    this.setState({ breakpoint: evt.target.value });
+    this.setState({
+      debug: {
+        ...this.state.debug,
+        breakpoint: evt.target.value
+      }
+    });
   };
 
   renderControls() {
@@ -156,7 +162,9 @@ class App extends React.Component {
     const otherRegisters = this.state.otherRegisters;
     const V = this.state.V;
     const stack = this.state.stack;
-    const memory = this.state.memory;
+
+    const debug = this.state.debug;
+    const breakpoint = this.state.debug.breakpoint;
 
     return (
       <div className="App">
@@ -168,18 +176,6 @@ class App extends React.Component {
           <Screen displayData={this.state.displayData} />
         </main>
         <footer className="MemoryView">
-          <div className="Breakpoint">
-            <label className="BreakpointLabel" htmlFor="breakpoint">
-              Breakpoint
-            </label>
-            <input
-              type="text"
-              onChange={this.onBreakpointChange}
-              value={this.state.breakpoint}
-              className="BreakpointInput"
-              id="breakpoint"
-            />
-          </div>
           <Keypad onKeydown={this.onKeydown} onKeyup={this.onKeyup} />
           <OtherRegisters
             old={otherRegisters.old}
@@ -187,7 +183,12 @@ class App extends React.Component {
           />
           <VRegisters old={V.old} current={V.current} />
           <Stack old={stack.old} current={stack.current} />
-          <Memory old={memory.old} current={memory.current} />
+          <Debug
+            breakpoint={breakpoint}
+            old={debug.old}
+            current={debug.current}
+            onChange={this.onBreakpointChange}
+          />
         </footer>
       </div>
     );
