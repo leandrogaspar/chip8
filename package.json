@@ -42,7 +42,7 @@
     "husky": "^2.3.0",
     "lint-staged": "^8.1.7",
     "prettier": "^1.17.1",
-    "react-testing-library": "^7.0.0"
+    "react-testing-library": "^8.0.0"
   },
   "husky": {
     "hooks": {
