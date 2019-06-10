@@ -7,6 +7,13 @@
 
 [Play with it!](https://leandrogaspar.github.io/chip8/)
 
+## The Ever-Growing non-exhaustive over-hyphenated to-do list
+- [ ] Fix scroll-bar on Firefox
+- [ ] Keypad should be clickable
+- [ ] Keypad should show the keyboward mapping
+- [ ] Tests more ROM's
+- [ ] Make the emulator color configurable
+
 ## Development
 
 ### `npm start`
