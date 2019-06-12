@@ -9,6 +9,7 @@
 
 ## The ever-growing non-exhaustive over-hyphenated to-do list
 - [ ] Fix scroll-bar on Firefox
+- [ ] Fix select rom style
 - [ ] Keypad should be clickable
 - [ ] Keypad should show the keyboward mapping
 - [ ] Tests more ROM's

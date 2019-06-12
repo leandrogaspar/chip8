@@ -14,3 +14,26 @@
   cursor: pointer;
   color: var(--main-color-hover);
 }
+
+.RomList {
+  max-width: 170px;
+  min-height: 42px;
+  padding: 0.5rem;
+  margin: 0.5rem;
+  display: inline-block;
+  color: var(--main-color);
+  border: var(--main-color-border);
+  font-family: var(--font-stack);
+  color: var(--main-color);
+  background-color: var(--main-bg-color);
+}
+
+.RomList:hover {
+  color: var(--main-color-hover);
+  border: var(--main-color-hover-border);
+  cursor: pointer;
+}
+
+.RomList {
+  outline: none;
+}
