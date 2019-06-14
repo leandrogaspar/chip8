@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/leandrogaspar/chip8.svg?branch=master)](https://travis-ci.org/leandrogaspar/chip8) [![Greenkeeper badge](https://badges.greenkeeper.io/leandrogaspar/chip8.svg)](https://greenkeeper.io/)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fleandrogaspar%2Fchip8.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fleandrogaspar%2Fchip8?ref=badge_shield)
 
 # Chip-8
 > A Chip-8 interpreter for the browser!
@@ -64,3 +65,7 @@ Builds the app for production to the `build` folder.<br>
 * [Mastering CHIP-8](http://mattmik.com/files/chip8/mastering/chip8.html) - by Matthew Mikolay
 * [Cowgod's Chip-8 Technical Reference v1.0](http://devernay.free.fr/hacks/chip8/C8TECH10.HTM) - by Thomas P. Greene
 * [Using CSS To Create A CRT](http://aleclownes.com/2017/02/01/crt-display.html) - by Alec Lownes
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fleandrogaspar%2Fchip8.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fleandrogaspar%2Fchip8?ref=badge_large)
