@@ -7,8 +7,7 @@
   user-select: none;
 }
 
-.Button:hover,
-.Button:focus {
+.Button:hover {
   color: var(--main-color-hover);
   border: var(--main-color-hover-border);
   cursor: pointer;

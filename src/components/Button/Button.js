@@ -7,6 +7,8 @@ const Button = props => (
     aria-label={props.children}
     className="Button"
     onClick={props.onClick}
+    onMouseUp={props.onMouseUp}
+    onMouseDown={props.onMouseDown}
     tabIndex="0"
   >
     {props.children}

@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import './Keypad.css';
+
+import Button from '../Button';
 
 // 1	2	3	C
 // 4	5	6	D
@@ -17,23 +19,24 @@ const keyMap = {
 const keys = [ 0x1, 0x2, 0x3, 0xc, 0x4, 0x5, 0x6, 0xd, 0x7, 0x8, 0x9, 0xe, 0xa, 0x0, 0xb, 0xf ];
 
 const Keypad = props => {
-  const [pressedKeys, setPressedKeys] = useState({});
-
-  const setKeyState = (key, pressed) => {
+  const handleKeyBoardevent = (key, pressed) => {
     const keyFromEvent = keyMap[key];
-    const newState = Object.assign({}, pressedKeys);
-    newState[keyFromEvent] = pressed;
-    setPressedKeys(newState);
 
+    keyStateUpdate(keyFromEvent, pressed);
+  };
+
+  const keyStateUpdate = (key, pressed) => {
     if (pressed) {
-      props.onKeydown(keyFromEvent);
+      props.onKeydown(key);
     } else {
-      props.onKeyup(keyFromEvent);
+      props.onKeyup(key);
     }
   };
 
-  const onKeydown = evt => setKeyState(evt.key, true);
-  const onKeyup = evt => setKeyState(evt.key, false);
+  const onKeydown = evt => handleKeyBoardevent(evt.key, true);
+  const onKeyup = evt => handleKeyBoardevent(evt.key, false);
+  const onMouseDown = key => keyStateUpdate(key, true);
+  const onMouseUp = key => keyStateUpdate(key, false);
 
   useEffect(() => {
     document.addEventListener('keydown', onKeydown);
@@ -50,12 +53,13 @@ const Keypad = props => {
       <h1>Keypad</h1>
       <div className="Keys">
         {keys.map(key => (
-          <div
+          <Button
             key={key}
-            className={'Key ' + (pressedKeys[key] === true ? 'PressedKey' : '')}
+            onMouseUp={() => onMouseUp(key)}
+            onMouseDown={() => onMouseDown(key)}
           >
             {key.toString(16).toUpperCase()}
-          </div>
+          </Button>
         ))}
       </div>
     </section>
