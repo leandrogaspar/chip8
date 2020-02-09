@@ -1,15 +1,22 @@
 {
   "files": {
-    "main.css": "/chip8/static/css/main.a5450d67.chunk.css",
-    "main.js": "/chip8/static/js/main.931583a3.chunk.js",
-    "main.js.map": "/chip8/static/js/main.931583a3.chunk.js.map",
-    "runtime-main.js": "/chip8/static/js/runtime-main.5d1a899a.js",
-    "runtime-main.js.map": "/chip8/static/js/runtime-main.5d1a899a.js.map",
-    "static/js/2.1f4a3def.chunk.js": "/chip8/static/js/2.1f4a3def.chunk.js",
-    "static/js/2.1f4a3def.chunk.js.map": "/chip8/static/js/2.1f4a3def.chunk.js.map",
+    "main.css": "/chip8/static/css/main.70648e6f.chunk.css",
+    "main.js": "/chip8/static/js/main.824603ec.chunk.js",
+    "main.js.map": "/chip8/static/js/main.824603ec.chunk.js.map",
+    "runtime-main.js": "/chip8/static/js/runtime-main.2b6d8202.js",
+    "runtime-main.js.map": "/chip8/static/js/runtime-main.2b6d8202.js.map",
+    "static/js/2.3b940840.chunk.js": "/chip8/static/js/2.3b940840.chunk.js",
+    "static/js/2.3b940840.chunk.js.map": "/chip8/static/js/2.3b940840.chunk.js.map",
     "index.html": "/chip8/index.html",
-    "precache-manifest.6ad358a5645bb106772b8dd65c42763c.js": "/chip8/precache-manifest.6ad358a5645bb106772b8dd65c42763c.js",
+    "precache-manifest.9cddf7f214748bac85f2605377a54f7e.js": "/chip8/precache-manifest.9cddf7f214748bac85f2605377a54f7e.js",
     "service-worker.js": "/chip8/service-worker.js",
-    "static/css/main.a5450d67.chunk.css.map": "/chip8/static/css/main.a5450d67.chunk.css.map"
-  }
+    "static/css/main.70648e6f.chunk.css.map": "/chip8/static/css/main.70648e6f.chunk.css.map",
+    "static/js/2.3b940840.chunk.js.LICENSE.txt": "/chip8/static/js/2.3b940840.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.2b6d8202.js",
+    "static/js/2.3b940840.chunk.js",
+    "static/css/main.70648e6f.chunk.css",
+    "static/js/main.824603ec.chunk.js"
+  ]
 }
