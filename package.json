@@ -41,7 +41,7 @@
   "devDependencies": {
     "@testing-library/react": "^10.0.0",
     "husky": "^4.2.1",
-    "lint-staged": "^10.0.7",
+    "lint-staged": "^10.2.7",
     "prettier": "1.19.0"
   },
   "husky": {
